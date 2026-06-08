@@ -6,9 +6,8 @@
 // =============================================================
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import {
-  GraduationCap,
   Sparkles,
   Loader2,
   AlertTriangle,
@@ -20,12 +19,13 @@ import {
 // A simple button with a few color "variants".
 // -------------------------------------------------------------
 export function Button({ children, onClick, variant = "primary", type = "button" }) {
-  // Pick the right Tailwind classes based on the variant
-  let styles = "bg-blue-600 text-white hover:bg-blue-700"; // primary (blue)
-  if (variant === "teal") styles = "bg-teal-500 text-white hover:bg-teal-600";
+  // Pick the right Tailwind classes based on the variant (Evolio brand colors)
+  let styles = "bg-[#001776] text-white hover:bg-[#001456]"; // primary (deep navy)
+  if (variant === "teal") styles = "bg-[#199DB2] text-white hover:bg-[#147d8f]"; // secondary
+  if (variant === "accent") styles = "bg-[#3199CC] text-white hover:bg-[#2b86b3]"; // accent
   if (variant === "outline")
-    styles = "bg-white text-blue-600 border border-blue-600 hover:bg-blue-50";
-  if (variant === "danger") styles = "bg-red-500 text-white hover:bg-red-600";
+    styles = "bg-white text-[#001776] border border-[#001776] hover:bg-[#F0F4FF]";
+  if (variant === "danger") styles = "bg-red-600 text-white hover:bg-red-700";
 
   return (
     <button
@@ -44,7 +44,7 @@ export function Button({ children, onClick, variant = "primary", type = "button"
 // -------------------------------------------------------------
 export function Card({ children, className = "" }) {
   return (
-    <div className={`rounded-xl border border-gray-200 bg-white p-5 shadow-sm ${className}`}>
+    <div className={`rounded-xl border border-[#DDE7F0] bg-white p-5 shadow-sm ${className}`}>
       {children}
     </div>
   );
@@ -57,11 +57,11 @@ export function Card({ children, className = "" }) {
 export function Badge({ text, color = "blue" }) {
   // Map a color name to Tailwind classes
   const colors = {
-    blue: "bg-blue-100 text-blue-700",
-    teal: "bg-teal-100 text-teal-700",
-    green: "bg-green-100 text-green-700",
-    yellow: "bg-yellow-100 text-yellow-700",
-    red: "bg-red-100 text-red-700",
+    blue: "bg-[#E6F2FA] text-[#001776]",
+    teal: "bg-[#E1F4F7] text-[#147d8f]",
+    green: "bg-green-50 text-green-700",
+    yellow: "bg-yellow-50 text-yellow-700",
+    red: "bg-red-50 text-red-700",
     gray: "bg-gray-100 text-gray-700",
   };
   return (
@@ -84,7 +84,7 @@ export function Input({ label, value, onChange, type = "text", placeholder = "" 
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-[#3199CC] focus:outline-none"
       />
     </div>
   );
@@ -103,7 +103,7 @@ export function Textarea({ label, value, onChange, placeholder = "", rows = 4 })
         onChange={onChange}
         placeholder={placeholder}
         rows={rows}
-        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-[#3199CC] focus:outline-none"
       />
     </div>
   );
@@ -151,7 +151,7 @@ export function EmptyState({ message = "Nothing here yet." }) {
 export function LoadingState({ message = "Loading..." }) {
   return (
     <div className="flex flex-col items-center justify-center p-10 text-center">
-      <Loader2 className="mb-3 h-8 w-8 animate-spin text-blue-600" />
+      <Loader2 className="mb-3 h-8 w-8 animate-spin text-[#001776]" />
       <p className="text-sm text-gray-500">{message}</p>
     </div>
   );
@@ -176,8 +176,9 @@ export function ErrorState({ message = "Something went wrong." }) {
 // -------------------------------------------------------------
 export function StatCard({ label, value, accent = "blue" }) {
   const accentColors = {
-    blue: "text-blue-600",
-    teal: "text-teal-500",
+    blue: "text-[#001776]",
+    teal: "text-[#199DB2]",
+    accent: "text-[#3199CC]",
     gray: "text-gray-700",
   };
   return (
@@ -197,36 +198,34 @@ export function StatCard({ label, value, accent = "blue" }) {
 // -------------------------------------------------------------
 export function Navbar() {
   return (
-    <nav className="flex items-center justify-between border-b border-gray-200 bg-white px-6 py-4">
-      {/* Left: "E" logo badge links back home */}
-      <Link to="/" className="flex items-center gap-2 text-xl font-bold text-blue-600">
-        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-base font-bold text-white">
-          E
-        </span>
+    <nav className="flex items-center justify-between border-b border-[#DDE7F0] bg-white px-6 py-4">
+      {/* Left: Evolio logo beside the wordmark, links back home */}
+      <Link to="/" className="flex items-center gap-2 text-xl font-bold text-[#001776]">
+        <img src="/logo.svg" alt="Evolio logo" className="h-10 w-auto" />
         Evolio
       </Link>
 
       {/* Center: simple marketing links (anchor to landing page sections) */}
       <div className="hidden items-center gap-6 md:flex">
-        <a href="/#features" className="text-sm text-gray-600 hover:text-blue-600">
+        <a href="/#features" className="text-sm text-gray-600 hover:text-[#199DB2]">
           Features
         </a>
-        <a href="/#how-it-works" className="text-sm text-gray-600 hover:text-blue-600">
+        <a href="/#how-it-works" className="text-sm text-gray-600 hover:text-[#199DB2]">
           How it works
         </a>
-        <a href="/#for-teams" className="text-sm text-gray-600 hover:text-blue-600">
+        <a href="/#for-teams" className="text-sm text-gray-600 hover:text-[#199DB2]">
           For teams
         </a>
       </div>
 
       {/* Right: auth buttons */}
       <div className="flex items-center gap-2">
-        <Link to="/sign-in" className="text-sm text-gray-600 hover:text-blue-600">
+        <Link to="/sign-in" className="text-sm text-gray-600 hover:text-[#199DB2]">
           Sign In
         </Link>
         <Link
           to="/create-account"
-          className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+          className="rounded-lg bg-[#001776] px-4 py-2 text-sm font-medium text-white hover:bg-[#001456]"
         >
           Create Account
         </Link>
@@ -244,24 +243,34 @@ export function Navbar() {
 // -------------------------------------------------------------
 export function Sidebar({ title, links }) {
   return (
-    <aside className="w-full shrink-0 border-b border-gray-200 bg-white p-4 md:min-h-screen md:w-60 md:border-b-0 md:border-r">
-      {/* Logo / title */}
-      <Link to="/" className="mb-6 flex items-center gap-2 text-lg font-bold text-blue-600">
-        <GraduationCap className="h-5 w-5 text-teal-500" />
+    <aside className="w-full shrink-0 border-b border-[#001456] bg-[#001776] p-4 md:min-h-screen md:w-60 md:border-b-0 md:border-r">
+      {/* Logo / title (logo sits on a white chip so it reads on the navy bg) */}
+      <Link to="/" className="mb-6 flex items-center gap-2 text-lg font-bold text-white">
+        <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-white p-1">
+          <img src="/logo.svg" alt="Evolio logo" className="h-full w-auto" />
+        </span>
         Evolio
       </Link>
-      <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-gray-400">{title}</p>
+      <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-white/50">{title}</p>
 
-      {/* Loop over the links and make a menu item for each */}
+      {/* Loop over the links and make a menu item for each.
+          NavLink gives us an "isActive" flag so the current page is highlighted. */}
       <nav className="flex flex-col gap-1">
         {links.map((link) => (
-          <Link
+          <NavLink
             key={link.to}
             to={link.to}
-            className="rounded-lg px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600"
+            end
+            className={({ isActive }) =>
+              `rounded-lg px-3 py-2 text-sm transition ${
+                isActive
+                  ? "bg-[#199DB2] text-white"
+                  : "text-white/70 hover:bg-white/10 hover:text-white"
+              }`
+            }
           >
             {link.label}
-          </Link>
+          </NavLink>
         ))}
       </nav>
     </aside>
@@ -289,9 +298,9 @@ export function AIBox({ title, buttonLabel = "Generate with AI", result }) {
   }
 
   return (
-    <Card className="border-teal-200 bg-teal-50">
+    <Card className="border-[#199DB2]/30 bg-[#E1F4F7]">
       <div className="mb-3 flex items-center gap-2">
-        <Sparkles className="h-5 w-5 text-teal-500" />
+        <Sparkles className="h-5 w-5 text-[#199DB2]" />
         <h3 className="font-semibold text-gray-800">{title}</h3>
       </div>
 

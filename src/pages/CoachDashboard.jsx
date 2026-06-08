@@ -60,7 +60,7 @@ export default function CoachDashboard() {
             <h3 className="mb-4 font-semibold text-gray-800">Recent Feedback Activity</h3>
             <div className="space-y-3">
               {reviews.map((r) => (
-                <div key={r.id} className="border-l-2 border-teal-200 pl-3">
+                <div key={r.id} className="border-l-2 border-[#199DB2]/30 pl-3">
                   <div className="flex items-center gap-2">
                     <Badge text={r.status} color="teal" />
                     <span className="text-xs text-gray-400">{r.date}</span>

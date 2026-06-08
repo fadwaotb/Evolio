@@ -28,7 +28,7 @@ export default function StudentProgressPage() {
               <p className="text-sm text-gray-500">Completion: {student.profileCompletion}%</p>
               <div className="mt-1 h-2 w-full rounded-full bg-gray-100">
                 <div
-                  className="h-2 rounded-full bg-teal-500"
+                  className="h-2 rounded-full bg-[#199DB2]"
                   style={{ width: student.profileCompletion + "%" }}
                 ></div>
               </div>
@@ -49,7 +49,7 @@ export default function StudentProgressPage() {
             <h3 className="mb-4 font-semibold text-gray-800">Review History</h3>
             <div className="space-y-3">
               {reviews.map((r) => (
-                <div key={r.id} className="border-l-2 border-blue-200 pl-3">
+                <div key={r.id} className="border-l-2 border-[#3199CC]/30 pl-3">
                   <div className="flex items-center gap-2">
                     <Badge text={r.status} color="blue" />
                     <span className="text-xs text-gray-400">{r.date}</span>

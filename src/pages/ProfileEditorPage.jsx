@@ -87,7 +87,7 @@ export default function ProfileEditorPage() {
               <select
                 value={availability}
                 onChange={(e) => setAvailability(e.target.value)}
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-[#3199CC] focus:outline-none"
               >
                 <option>Open to work</option>
                 <option>Interviewing</option>

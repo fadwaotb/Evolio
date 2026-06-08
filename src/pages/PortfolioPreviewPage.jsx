@@ -93,11 +93,11 @@ export default function PortfolioPreviewPage() {
                     )}
 
                     <div className="mt-2 flex gap-3 text-sm">
-                      <a href={p.github} className="flex items-center gap-1 text-blue-600">
+                      <a href={p.github} className="flex items-center gap-1 text-[#001776]">
                         <Github className="h-4 w-4" /> Code
                       </a>
                       {p.demo && (
-                        <a href={p.demo} className="flex items-center gap-1 text-teal-600">
+                        <a href={p.demo} className="flex items-center gap-1 text-[#199DB2]">
                           <ExternalLink className="h-4 w-4" /> Demo
                         </a>
                       )}
@@ -113,7 +113,7 @@ export default function PortfolioPreviewPage() {
             {/* Portfolio views */}
             <Card>
               <p className="text-sm text-gray-500">Portfolio Views</p>
-              <p className="mt-1 text-2xl font-bold text-blue-600">{me.portfolioViews}</p>
+              <p className="mt-1 text-2xl font-bold text-[#001776]">{me.portfolioViews}</p>
             </Card>
 
             {/* Shareable link settings */}
@@ -140,7 +140,7 @@ export default function PortfolioPreviewPage() {
             {/* Ask About This Candidate bot */}
             <Card>
               <div className="mb-3 flex items-center gap-2">
-                <Bot className="h-5 w-5 text-blue-600" />
+                <Bot className="h-5 w-5 text-[#001776]" />
                 <h3 className="font-semibold text-gray-800">Ask About This Candidate</h3>
               </div>
               <p className="mb-3 text-sm text-gray-500">

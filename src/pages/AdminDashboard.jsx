@@ -80,7 +80,7 @@ function ReviewBar({ label, percent }) {
         <span>{percent}%</span>
       </div>
       <div className="mt-1 h-2 w-full rounded-full bg-gray-100">
-        <div className="h-2 rounded-full bg-blue-500" style={{ width: percent + "%" }}></div>
+        <div className="h-2 rounded-full bg-[#3199CC]" style={{ width: percent + "%" }}></div>
       </div>
     </div>
   );

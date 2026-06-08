@@ -109,11 +109,11 @@ export default function PortfolioViewerPage() {
                     )}
 
                     <div className="mt-2 flex gap-3 text-sm">
-                      <a href={p.github} className="flex items-center gap-1 text-blue-600">
+                      <a href={p.github} className="flex items-center gap-1 text-[#001776]">
                         <Github className="h-4 w-4" /> Code
                       </a>
                       {p.demo && (
-                        <a href={p.demo} className="flex items-center gap-1 text-teal-600">
+                        <a href={p.demo} className="flex items-center gap-1 text-[#199DB2]">
                           <ExternalLink className="h-4 w-4" /> Demo
                         </a>
                       )}
@@ -156,7 +156,7 @@ export default function PortfolioViewerPage() {
             {/* Ask About This Candidate bot */}
             <Card>
               <div className="mb-3 flex items-center gap-2">
-                <Bot className="h-5 w-5 text-blue-600" />
+                <Bot className="h-5 w-5 text-[#001776]" />
                 <h3 className="font-semibold text-gray-800">Ask About This Candidate</h3>
               </div>
               <Button onClick={askBot}>Ask the Bot</Button>

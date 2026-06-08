@@ -20,7 +20,7 @@ export const students = [
     linkedin: "https://linkedin.com/in/aisha",
     profileCompletion: 85, // percent
     portfolioViews: 240,
-    avatarColor: "bg-blue-500",
+    avatarColor: "bg-[#001776]",
   },
   {
     id: "s2",
@@ -35,7 +35,7 @@ export const students = [
     linkedin: "https://linkedin.com/in/marcus",
     profileCompletion: 60,
     portfolioViews: 130,
-    avatarColor: "bg-teal-500",
+    avatarColor: "bg-[#199DB2]",
   },
   {
     id: "s3",
@@ -50,7 +50,7 @@ export const students = [
     linkedin: "https://linkedin.com/in/priya",
     profileCompletion: 40,
     portfolioViews: 75,
-    avatarColor: "bg-indigo-500",
+    avatarColor: "bg-[#3199CC]",
   },
 ];
 

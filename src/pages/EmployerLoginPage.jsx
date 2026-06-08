@@ -58,13 +58,13 @@ export default function EmployerLoginPage() {
         <div className="mt-4 space-y-1 text-center text-sm text-gray-500">
           <p>
             New employer?{" "}
-            <Link to="/create-account" className="text-blue-600 hover:underline">
+            <Link to="/create-account" className="text-[#001776] hover:underline">
               Create Account
             </Link>
           </p>
           <p>
             Not an employer?{" "}
-            <Link to="/sign-in" className="text-blue-600 hover:underline">
+            <Link to="/sign-in" className="text-[#001776] hover:underline">
               Sign In
             </Link>
           </p>

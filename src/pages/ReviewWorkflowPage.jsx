@@ -78,7 +78,7 @@ export default function ReviewWorkflowPage() {
           <h3 className="mb-4 font-semibold text-gray-800">Feedback Timeline</h3>
           <div className="space-y-4">
             {myFeedback.map((item) => (
-              <div key={item.id} className="border-l-2 border-blue-200 pl-4">
+              <div key={item.id} className="border-l-2 border-[#3199CC]/30 pl-4">
                 <div className="flex items-center gap-2">
                   <Badge text={item.status} color={statusColor(item.status)} />
                   <span className="text-xs text-gray-400">{item.date}</span>

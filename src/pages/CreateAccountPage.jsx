@@ -87,7 +87,7 @@ export default function CreateAccountPage() {
                 <select
                   value={role}
                   onChange={(e) => setRole(e.target.value)}
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-[#3199CC] focus:outline-none"
                 >
                   {roles.map((r) => (
                     <option key={r}>{r}</option>
@@ -112,7 +112,7 @@ export default function CreateAccountPage() {
 
         <p className="mt-4 text-center text-sm text-gray-500">
           Already have an account?{" "}
-          <Link to="/sign-in" className="text-blue-600 hover:underline">
+          <Link to="/sign-in" className="text-[#001776] hover:underline">
             Sign in
           </Link>
         </p>

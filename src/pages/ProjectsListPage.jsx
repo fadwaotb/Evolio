@@ -74,7 +74,7 @@ export default function ProjectsListPage() {
           <select
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
-            className="h-10 rounded-lg border border-gray-300 px-3 text-sm focus:border-blue-500 focus:outline-none"
+            className="h-10 rounded-lg border border-gray-300 px-3 text-sm focus:border-[#3199CC] focus:outline-none"
           >
             <option>All</option>
             <option>Published</option>

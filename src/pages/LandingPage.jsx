@@ -8,11 +8,12 @@ export default function LandingPage() {
     <div>
       <Navbar />
 
-      {/* Hero section - clean, with one clear primary action */}
-      <section className="bg-white px-6 py-24 text-center">
-        <h1 className="mx-auto max-w-2xl text-4xl font-bold text-gray-800 md:text-5xl">
+      {/* Hero section - clean, with one clear primary action.
+          Subtle navy->teal tint keeps it light and on-brand. */}
+      <section className="bg-gradient-to-br from-[#F8FAFC] via-white to-[#E1F4F7] px-6 py-24 text-center">
+        <h1 className="mx-auto max-w-2xl text-4xl font-bold text-[#001776] md:text-5xl">
           Build and Share Your{" "}
-          <span className="text-blue-600">Student Portfolio</span>
+          <span className="text-[#199DB2]">Student Portfolio</span>
         </h1>
         <p className="mx-auto mt-4 max-w-xl text-gray-500">
           Evolio helps students create a profile, upload a resume, add projects,
@@ -35,21 +36,21 @@ export default function LandingPage() {
         <h2 className="mb-8 text-center text-2xl font-bold text-gray-800">Features</h2>
         <div className="grid gap-6 md:grid-cols-3">
           <Card>
-            <Rocket className="mb-3 h-8 w-8 text-blue-600" />
+            <Rocket className="mb-3 h-8 w-8 text-[#001776]" />
             <h3 className="font-semibold text-gray-800">Showcase Projects</h3>
             <p className="mt-1 text-sm text-gray-500">
               Add your best work with GitHub and demo links.
             </p>
           </Card>
           <Card>
-            <Users className="mb-3 h-8 w-8 text-teal-500" />
+            <Users className="mb-3 h-8 w-8 text-[#199DB2]" />
             <h3 className="font-semibold text-gray-800">Get Feedback</h3>
             <p className="mt-1 text-sm text-gray-500">
               Career coaches review your portfolio and help you improve.
             </p>
           </Card>
           <Card>
-            <Eye className="mb-3 h-8 w-8 text-blue-600" />
+            <Eye className="mb-3 h-8 w-8 text-[#3199CC]" />
             <h3 className="font-semibold text-gray-800">Get Discovered</h3>
             <p className="mt-1 text-sm text-gray-500">
               Employers find you and reach out about jobs.
@@ -64,21 +65,21 @@ export default function LandingPage() {
           <h2 className="mb-8 text-center text-2xl font-bold text-gray-800">How it works</h2>
           <div className="grid gap-6 md:grid-cols-3">
             <Card>
-              <FileText className="mb-3 h-8 w-8 text-blue-600" />
+              <FileText className="mb-3 h-8 w-8 text-[#001776]" />
               <h3 className="font-semibold text-gray-800">1. Create your profile</h3>
               <p className="mt-1 text-sm text-gray-500">
                 Add your details, skills, and upload your resume.
               </p>
             </Card>
             <Card>
-              <MessageSquare className="mb-3 h-8 w-8 text-teal-500" />
+              <MessageSquare className="mb-3 h-8 w-8 text-[#199DB2]" />
               <h3 className="font-semibold text-gray-800">2. Get reviewed</h3>
               <p className="mt-1 text-sm text-gray-500">
                 A career coach reviews your portfolio and gives feedback.
               </p>
             </Card>
             <Card>
-              <Share2 className="mb-3 h-8 w-8 text-blue-600" />
+              <Share2 className="mb-3 h-8 w-8 text-[#3199CC]" />
               <h3 className="font-semibold text-gray-800">3. Share it</h3>
               <p className="mt-1 text-sm text-gray-500">
                 Publish your portfolio and share it with employers.

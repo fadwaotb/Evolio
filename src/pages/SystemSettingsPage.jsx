@@ -93,7 +93,7 @@ export default function SystemSettingsPage() {
             <select
               value={accessPolicy}
               onChange={(e) => setAccessPolicy(e.target.value)}
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-[#3199CC] focus:outline-none"
             >
               <option>Invite only</option>
               <option>Open registration</option>
@@ -118,7 +118,7 @@ function Toggle({ label, on, onToggle }) {
       {/* A simple button that acts like an on/off switch */}
       <button
         onClick={onToggle}
-        className={`h-6 w-11 rounded-full p-1 transition ${on ? "bg-teal-500" : "bg-gray-300"}`}
+        className={`h-6 w-11 rounded-full p-1 transition ${on ? "bg-[#199DB2]" : "bg-gray-300"}`}
       >
         <span
           className={`block h-4 w-4 rounded-full bg-white transition ${on ? "translate-x-5" : ""}`}

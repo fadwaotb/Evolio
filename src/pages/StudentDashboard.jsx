@@ -35,11 +35,11 @@ export default function StudentDashboard() {
         <div className="mb-6 grid gap-4 sm:grid-cols-3">
           <Card>
             <p className="text-sm text-gray-500">Profile Completion</p>
-            <p className="mt-1 text-2xl font-bold text-blue-600">{stats.profileCompletion}%</p>
+            <p className="mt-1 text-2xl font-bold text-[#001776]">{stats.profileCompletion}%</p>
             {/* Simple progress bar */}
             <div className="mt-2 h-2 w-full rounded-full bg-gray-100">
               <div
-                className="h-2 rounded-full bg-teal-500"
+                className="h-2 rounded-full bg-[#199DB2]"
                 style={{ width: stats.profileCompletion + "%" }}
               ></div>
             </div>

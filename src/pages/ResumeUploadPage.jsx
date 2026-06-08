@@ -57,7 +57,7 @@ export default function ResumeUploadPage() {
             <Card>
               <h3 className="mb-3 font-semibold text-gray-800">Resume Details</h3>
               <div className="flex items-center gap-3">
-                <FileText className="h-8 w-8 text-blue-600" />
+                <FileText className="h-8 w-8 text-[#001776]" />
                 <div>
                   <p className="font-medium text-gray-800">{resume.fileName}</p>
                   <p className="text-xs text-gray-500">

@@ -62,7 +62,7 @@ export default function EmployerMessagingPage() {
                     <div
                       className={`max-w-xs rounded-lg p-3 text-sm ${
                         m.from === "employer"
-                          ? "bg-blue-600 text-white"
+                          ? "bg-[#001776] text-white"
                           : "bg-gray-100 text-gray-700"
                       }`}
                     >
@@ -84,7 +84,7 @@ export default function EmployerMessagingPage() {
                   <button
                     key={index}
                     onClick={() => useTemplate(template)}
-                    className="w-full rounded-lg border border-gray-200 p-2 text-left text-sm text-gray-600 hover:bg-blue-50"
+                    className="w-full rounded-lg border border-gray-200 p-2 text-left text-sm text-gray-600 hover:bg-[#F0F4FF]"
                   >
                     {template}
                   </button>
