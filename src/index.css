@@ -1,0 +1,9 @@
+/* Tailwind base styles */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Small global tweak so the whole app uses a light gray background */
+body {
+  background-color: #f8fafc; /* light gray */
+}
