@@ -38,20 +38,20 @@ export default function EmployerMessagingPage() {
   }
 
   return (
-    <div className="flex flex-col md:flex-row">
+    <div className="page-shell">
       <Sidebar title="Employer" links={employerLinks} />
 
-      <main className="flex-1 p-6">
-        <div className="mb-6 flex items-center justify-between">
+      <main className="page-main">
+        <div className="page-header-row">
           <h1 className="text-2xl font-bold text-gray-800">Messages</h1>
           <Button onClick={() => setModalOpen(true)}>New Message</Button>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-3">
+        <div className="content-grid-3">
           {/* Conversation history (2 columns) */}
           <div className="lg:col-span-2">
             <Card>
-              <h3 className="mb-4 font-semibold text-gray-800">Conversation with Aisha Khan</h3>
+              <h3 className="card-title mb-4">Conversation with Aisha Khan</h3>
               <div className="space-y-3">
                 {messages.map((m) => (
                   <div
@@ -78,7 +78,7 @@ export default function EmployerMessagingPage() {
           {/* Outreach templates */}
           <div>
             <Card>
-              <h3 className="mb-3 font-semibold text-gray-800">Outreach Templates</h3>
+              <h3 className="card-title">Outreach Templates</h3>
               <div className="space-y-2">
                 {outreachTemplates.map((template, index) => (
                   <button

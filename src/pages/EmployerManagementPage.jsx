@@ -25,14 +25,14 @@ export default function EmployerManagementPage() {
   const approvedCount = employers.filter((e) => e.status === "Approved").length;
 
   return (
-    <div className="flex flex-col md:flex-row">
+    <div className="page-shell">
       <Sidebar title="Admin" links={adminLinks} />
 
-      <main className="flex-1 p-6">
-        <h1 className="mb-6 text-2xl font-bold text-gray-800">Employer Management</h1>
+      <main className="page-main">
+        <h1 className="page-header">Employer Management</h1>
 
         {/* Activity overview */}
-        <div className="mb-6 grid gap-4 sm:grid-cols-3">
+        <div className="stats-grid-3">
           <StatCard label="Total Employers" value={employers.length} />
           <StatCard label="Approved" value={approvedCount} accent="teal" />
           <StatCard label="Pending" value={employers.length - approvedCount} />
@@ -40,13 +40,10 @@ export default function EmployerManagementPage() {
 
         {/* Employer directory */}
         <Card>
-          <h3 className="mb-4 font-semibold text-gray-800">Employer Directory</h3>
+          <h3 className="card-title mb-4">Employer Directory</h3>
           <div className="space-y-3">
             {employers.map((employer) => (
-              <div
-                key={employer.id}
-                className="flex flex-col gap-2 rounded-lg border border-gray-100 p-3 sm:flex-row sm:items-center sm:justify-between"
-              >
+              <div key={employer.id} className="list-row-responsive">
                 <div>
                   <p className="font-medium text-gray-800">{employer.company}</p>
                   <p className="text-xs text-gray-500">

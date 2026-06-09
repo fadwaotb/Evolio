@@ -15,14 +15,14 @@ export default function CoachManagementPage() {
   const totalReviews = coaches.reduce((sum, c) => sum + c.reviewsCompleted, 0);
 
   return (
-    <div className="flex flex-col md:flex-row">
+    <div className="page-shell">
       <Sidebar title="Admin" links={adminLinks} />
 
-      <main className="flex-1 p-6">
-        <h1 className="mb-6 text-2xl font-bold text-gray-800">Coach Management</h1>
+      <main className="page-main">
+        <h1 className="page-header">Coach Management</h1>
 
         {/* Performance summary */}
-        <div className="mb-6 grid gap-4 sm:grid-cols-3">
+        <div className="stats-grid-3">
           <StatCard label="Total Coaches" value={coaches.length} />
           <StatCard label="Students Assigned" value={totalStudents} accent="teal" />
           <StatCard label="Reviews Completed" value={totalReviews} />
@@ -30,13 +30,10 @@ export default function CoachManagementPage() {
 
         {/* Coach directory */}
         <Card>
-          <h3 className="mb-4 font-semibold text-gray-800">Coach Directory</h3>
+          <h3 className="card-title mb-4">Coach Directory</h3>
           <div className="space-y-3">
             {coaches.map((coach) => (
-              <div
-                key={coach.id}
-                className="flex flex-col gap-2 rounded-lg border border-gray-100 p-3 sm:flex-row sm:items-center sm:justify-between"
-              >
+              <div key={coach.id} className="list-row-responsive">
                 <div>
                   <p className="font-medium text-gray-800">{coach.name}</p>
                   <p className="text-xs text-gray-500">{coach.email}</p>

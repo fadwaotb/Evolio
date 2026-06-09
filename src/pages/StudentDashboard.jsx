@@ -23,23 +23,23 @@ export default function StudentDashboard() {
   ];
 
   return (
-    <div className="flex flex-col md:flex-row">
+    <div className="page-shell">
       {/* Left menu */}
       <Sidebar title="Student" links={studentLinks} />
 
       {/* Main content */}
-      <main className="flex-1 p-6">
-        <h1 className="mb-6 text-2xl font-bold text-gray-800">Dashboard</h1>
+      <main className="page-main">
+        <h1 className="page-header">Dashboard</h1>
 
         {/* Status row */}
-        <div className="mb-6 grid gap-4 sm:grid-cols-3">
+        <div className="stats-grid-3">
           <Card>
             <p className="text-sm text-gray-500">Profile Completion</p>
             <p className="mt-1 text-2xl font-bold text-[#001776]">{stats.profileCompletion}%</p>
             {/* Simple progress bar */}
-            <div className="mt-2 h-2 w-full rounded-full bg-gray-100">
+            <div className="progress-track mt-2">
               <div
-                className="h-2 rounded-full bg-[#199DB2]"
+                className="progress-fill"
                 style={{ width: stats.profileCompletion + "%" }}
               ></div>
             </div>
@@ -83,10 +83,10 @@ export default function StudentDashboard() {
 
         {/* Recent activity (simple mock list) */}
         <Card className="mb-6">
-          <h3 className="mb-4 font-semibold text-gray-800">Recent Activity</h3>
+          <h3 className="card-title mb-4">Recent Activity</h3>
           <div className="space-y-3 text-sm">
             {recentActivity.map((item, index) => (
-              <div key={index} className="flex justify-between border-b border-gray-100 pb-2">
+              <div key={index} className="activity-row">
                 <span className="text-gray-600">{item.text}</span>
                 <span className="text-gray-400">{item.time}</span>
               </div>

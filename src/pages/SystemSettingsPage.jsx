@@ -41,20 +41,18 @@ export default function SystemSettingsPage() {
   }
 
   return (
-    <div className="flex flex-col md:flex-row">
+    <div className="page-shell">
       <Sidebar title="Admin" links={adminLinks} />
 
-      <main className="flex-1 p-6">
-        <h1 className="mb-6 text-2xl font-bold text-gray-800">System Settings</h1>
+      <main className="page-main">
+        <h1 className="page-header">System Settings</h1>
 
-        {message && (
-          <p className="mb-4 rounded-lg bg-green-50 p-2 text-sm text-green-700">{message}</p>
-        )}
+        {message && <p className="alert-success">{message}</p>}
 
-        <div className="grid gap-6 lg:grid-cols-2">
+        <div className="content-grid">
           {/* Feature flags */}
           <Card>
-            <h3 className="mb-3 font-semibold text-gray-800">Feature Flags</h3>
+            <h3 className="card-title">Feature Flags</h3>
             <Toggle
               label="AI Feedback"
               on={features.aiFeedback}
@@ -74,7 +72,7 @@ export default function SystemSettingsPage() {
 
           {/* Notification settings */}
           <Card>
-            <h3 className="mb-3 font-semibold text-gray-800">Notifications</h3>
+            <h3 className="card-title">Notifications</h3>
             <Toggle
               label="Email Alerts"
               on={notifications.emailAlerts}
@@ -89,11 +87,11 @@ export default function SystemSettingsPage() {
 
           {/* Access policy */}
           <Card>
-            <h3 className="mb-3 font-semibold text-gray-800">Access Policy</h3>
+            <h3 className="card-title">Access Policy</h3>
             <select
               value={accessPolicy}
               onChange={(e) => setAccessPolicy(e.target.value)}
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-[#3199CC] focus:outline-none"
+              className="form-input"
             >
               <option>Invite only</option>
               <option>Open registration</option>

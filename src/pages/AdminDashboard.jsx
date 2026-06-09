@@ -12,31 +12,31 @@ export default function AdminDashboard() {
   const stats = analytics.admin;
 
   return (
-    <div className="flex flex-col md:flex-row">
+    <div className="page-shell">
       <Sidebar title="Admin" links={adminLinks} />
 
-      <main className="flex-1 p-6">
-        <h1 className="mb-6 text-2xl font-bold text-gray-800">Admin Dashboard</h1>
+      <main className="page-main">
+        <h1 className="page-header">Admin Dashboard</h1>
 
         {/* Platform metrics */}
-        <div className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="dashboard-grid">
           <StatCard label="Total Users" value={stats.totalUsers} />
           <StatCard label="Students" value={stats.totalStudents} accent="teal" />
           <StatCard label="Employers" value={stats.totalEmployers} />
           <StatCard label="Coaches" value={stats.totalCoaches} accent="teal" />
         </div>
 
-        <div className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="dashboard-grid">
           <StatCard label="Published Portfolios" value={stats.publishedPortfolios} />
           <StatCard label="User Growth" value={stats.userGrowth} accent="teal" />
           <StatCard label="Employer Engagement" value={stats.employerEngagement} />
           <StatCard label="Moderation Alerts" value={stats.moderationAlerts} accent="teal" />
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-2">
+        <div className="content-grid">
           {/* Review workflow analytics (simple text bars) */}
           <Card>
-            <h3 className="mb-4 font-semibold text-gray-800">Review Workflow</h3>
+            <h3 className="card-title mb-4">Review Workflow</h3>
             <div className="space-y-3 text-sm">
               {/* Each bar is a simple div with a width */}
               <ReviewBar label="Draft" percent={20} />
@@ -48,13 +48,10 @@ export default function AdminDashboard() {
 
           {/* Moderation alerts */}
           <Card>
-            <h3 className="mb-4 font-semibold text-gray-800">Moderation Alerts</h3>
+            <h3 className="card-title mb-4">Moderation Alerts</h3>
             <div className="space-y-3">
               {reportedContent.map((item) => (
-                <div
-                  key={item.id}
-                  className="flex items-center justify-between rounded-lg border border-gray-100 p-3"
-                >
+                <div key={item.id} className="list-row">
                   <div>
                     <p className="text-sm font-medium text-gray-800">{item.type}</p>
                     <p className="text-xs text-gray-500">{item.reason}</p>
@@ -79,8 +76,8 @@ function ReviewBar({ label, percent }) {
         <span>{label}</span>
         <span>{percent}%</span>
       </div>
-      <div className="mt-1 h-2 w-full rounded-full bg-gray-100">
-        <div className="h-2 rounded-full bg-[#3199CC]" style={{ width: percent + "%" }}></div>
+      <div className="progress-track mt-1">
+        <div className="progress-fill bg-[#3199CC]" style={{ width: percent + "%" }}></div>
       </div>
     </div>
   );

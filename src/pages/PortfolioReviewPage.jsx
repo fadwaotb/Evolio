@@ -36,9 +36,9 @@ export default function PortfolioReviewPage() {
   // Show error if the student id is invalid
   if (!student) {
     return (
-      <div className="flex flex-col md:flex-row">
+      <div className="page-shell">
         <Sidebar title="Career Coach" links={coachLinks} />
-        <main className="flex-1 p-6">
+        <main className="page-main">
           <ErrorState message="Student not found." />
         </main>
       </div>
@@ -56,21 +56,19 @@ export default function PortfolioReviewPage() {
   }
 
   return (
-    <div className="flex flex-col md:flex-row">
+    <div className="page-shell">
       <Sidebar title="Career Coach" links={coachLinks} />
 
-      <main className="flex-1 p-6">
-        <h1 className="mb-1 text-2xl font-bold text-gray-800">Review: {student.name}</h1>
+      <main className="page-main">
+        <h1 className="page-header mb-1">Review: {student.name}</h1>
         <p className="mb-6 text-sm text-gray-500">{student.headline}</p>
 
-        {message && (
-          <p className="mb-4 rounded-lg bg-green-50 p-2 text-sm text-green-700">{message}</p>
-        )}
+        {message && <p className="alert-success">{message}</p>}
 
-        <div className="grid gap-6 lg:grid-cols-2">
+        <div className="content-grid">
           {/* Checklist + AI readiness */}
           <Card>
-            <h3 className="mb-3 font-semibold text-gray-800">Review Checklist</h3>
+            <h3 className="card-title">Review Checklist</h3>
             <div className="space-y-2 text-sm text-gray-700">
               <label className="flex items-center gap-2">
                 <input type="checkbox" checked={checklist.profile} onChange={() => toggleCheck("profile")} />
@@ -91,7 +89,7 @@ export default function PortfolioReviewPage() {
             </div>
 
             {/* AI readiness indicators (fake) */}
-            <h3 className="mb-2 mt-5 font-semibold text-gray-800">AI Readiness Indicators</h3>
+            <h3 className="card-title mb-2 mt-5">AI Readiness Indicators</h3>
             <div className="flex flex-wrap gap-2">
               <Badge text="Profile: Good" color="green" />
               <Badge text="Projects: Needs work" color="yellow" />
@@ -101,7 +99,7 @@ export default function PortfolioReviewPage() {
 
           {/* Feedback form + status buttons */}
           <Card>
-            <h3 className="mb-3 font-semibold text-gray-800">Feedback</h3>
+            <h3 className="card-title">Feedback</h3>
             <Textarea
               value={feedback}
               onChange={(e) => setFeedback(e.target.value)}
@@ -130,10 +128,10 @@ export default function PortfolioReviewPage() {
 
         {/* Feedback timeline */}
         <Card className="mt-6">
-          <h3 className="mb-4 font-semibold text-gray-800">Feedback Timeline</h3>
+          <h3 className="card-title mb-4">Feedback Timeline</h3>
           <div className="space-y-3">
             {timeline.map((item) => (
-              <div key={item.id} className="border-l-2 border-[#3199CC]/30 pl-3">
+              <div key={item.id} className="timeline-item">
                 <div className="flex items-center gap-2">
                   <Badge text={item.status} color="blue" />
                   <span className="text-xs text-gray-400">{item.date}</span>

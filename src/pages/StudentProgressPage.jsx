@@ -11,11 +11,11 @@ import { students, reviews, aiFeedback } from "../data.js";
 // Student Progress Page - the coach tracks student completion + history.
 export default function StudentProgressPage() {
   return (
-    <div className="flex flex-col md:flex-row">
+    <div className="page-shell">
       <Sidebar title="Career Coach" links={coachLinks} />
 
-      <main className="flex-1 p-6">
-        <h1 className="mb-6 text-2xl font-bold text-gray-800">Student Progress</h1>
+      <main className="page-main">
+        <h1 className="page-header">Student Progress</h1>
 
         {/* Completion metrics for each student */}
         <div className="mb-6 grid gap-4 md:grid-cols-3">
@@ -26,9 +26,9 @@ export default function StudentProgressPage() {
 
               {/* Progress bar for completion */}
               <p className="text-sm text-gray-500">Completion: {student.profileCompletion}%</p>
-              <div className="mt-1 h-2 w-full rounded-full bg-gray-100">
+              <div className="progress-track mt-1">
                 <div
-                  className="h-2 rounded-full bg-[#199DB2]"
+                  className="progress-fill"
                   style={{ width: student.profileCompletion + "%" }}
                 ></div>
               </div>
@@ -43,13 +43,13 @@ export default function StudentProgressPage() {
           <StatCard label="Improving Students" value={2} />
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-2">
+        <div className="content-grid">
           {/* Review history */}
           <Card>
-            <h3 className="mb-4 font-semibold text-gray-800">Review History</h3>
+            <h3 className="card-title mb-4">Review History</h3>
             <div className="space-y-3">
               {reviews.map((r) => (
-                <div key={r.id} className="border-l-2 border-[#3199CC]/30 pl-3">
+                <div key={r.id} className="timeline-item">
                   <div className="flex items-center gap-2">
                     <Badge text={r.status} color="blue" />
                     <span className="text-xs text-gray-400">{r.date}</span>

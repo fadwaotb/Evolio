@@ -33,21 +33,19 @@ export default function PortfolioPreviewPage() {
   }
 
   return (
-    <div className="flex flex-col md:flex-row">
+    <div className="page-shell">
       <Sidebar title="Student" links={studentLinks} />
 
-      <main className="flex-1 p-6">
-        <h1 className="mb-6 text-2xl font-bold text-gray-800">Portfolio Preview</h1>
+      <main className="page-main">
+        <h1 className="page-header">Portfolio Preview</h1>
 
-        <div className="grid gap-6 lg:grid-cols-3">
+        <div className="content-grid-3">
           {/* Left: profile + projects (2 columns) */}
           <div className="space-y-6 lg:col-span-2">
             {/* Profile header */}
             <Card>
               <div className="flex items-center gap-4">
-                <div
-                  className={`flex h-16 w-16 items-center justify-center rounded-full text-xl font-bold text-white ${me.avatarColor}`}
-                >
+                <div className={`avatar ${me.avatarColor}`}>
                   {me.name.charAt(0)}
                 </div>
                 <div>
@@ -68,7 +66,7 @@ export default function PortfolioPreviewPage() {
 
             {/* Skills */}
             <Card>
-              <h3 className="mb-3 font-semibold text-gray-800">Skills</h3>
+              <h3 className="card-title">Skills</h3>
               <div className="flex flex-wrap gap-2">
                 {me.skills.map((skill) => (
                   <Badge key={skill} text={skill} color="blue" />
@@ -78,10 +76,10 @@ export default function PortfolioPreviewPage() {
 
             {/* Featured projects */}
             <Card>
-              <h3 className="mb-3 font-semibold text-gray-800">Featured Projects</h3>
+              <h3 className="card-title">Featured Projects</h3>
               <div className="space-y-4">
                 {featured.map((p) => (
-                  <div key={p.id} className="rounded-lg border border-gray-100 p-4">
+                  <div key={p.id} className="project-item">
                     <h4 className="font-medium text-gray-800">{p.title}</h4>
                     <p className="text-sm text-gray-500">{p.summary}</p>
 
@@ -118,7 +116,7 @@ export default function PortfolioPreviewPage() {
 
             {/* Shareable link settings */}
             <Card>
-              <h3 className="mb-3 font-semibold text-gray-800">Shareable Link</h3>
+              <h3 className="card-title">Shareable Link</h3>
               <Input value="https://evolio.app/p/aisha" onChange={() => {}} />
               <label className="flex items-center gap-2 text-sm text-gray-600">
                 <input

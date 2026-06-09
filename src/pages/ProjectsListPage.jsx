@@ -51,11 +51,11 @@ export default function ProjectsListPage() {
   });
 
   return (
-    <div className="flex flex-col md:flex-row">
+    <div className="page-shell">
       <Sidebar title="Student" links={studentLinks} />
 
-      <main className="flex-1 p-6">
-        <div className="mb-6 flex items-center justify-between">
+      <main className="page-main">
+        <div className="page-header-row">
           <h1 className="text-2xl font-bold text-gray-800">My Projects</h1>
           <Link to="/student/projects/new">
             <Button>+ Add Project</Button>
@@ -63,7 +63,7 @@ export default function ProjectsListPage() {
         </div>
 
         {/* Search + filter controls */}
-        <div className="mb-6 flex flex-col gap-3 sm:flex-row">
+        <div className="filter-bar">
           <div className="flex-1">
             <Input
               value={search}
@@ -74,7 +74,7 @@ export default function ProjectsListPage() {
           <select
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
-            className="h-10 rounded-lg border border-gray-300 px-3 text-sm focus:border-[#3199CC] focus:outline-none"
+            className="filter-select"
           >
             <option>All</option>
             <option>Published</option>
@@ -91,7 +91,7 @@ export default function ProjectsListPage() {
         {visibleProjects.length === 0 ? (
           <EmptyState message="No projects found. Try adding one!" />
         ) : (
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="card-grid">
             {visibleProjects.map((project) => (
               <Card key={project.id}>
                 <div className="mb-2 flex items-center justify-between">

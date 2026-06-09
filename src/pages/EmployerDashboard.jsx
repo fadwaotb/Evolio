@@ -47,14 +47,14 @@ export default function EmployerDashboard() {
   const savedCandidates = students.filter((s) => saved.includes(s.id));
 
   return (
-    <div className="flex flex-col md:flex-row">
+    <div className="page-shell">
       <Sidebar title="Employer" links={employerLinks} />
 
-      <main className="flex-1 p-6">
-        <h1 className="mb-6 text-2xl font-bold text-gray-800">Employer Dashboard</h1>
+      <main className="page-main">
+        <h1 className="page-header">Employer Dashboard</h1>
 
         {/* Stat cards */}
-        <div className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="dashboard-grid">
           <StatCard label="Candidates" value={students.length} />
           <StatCard label="Saved" value={saved.length} accent="teal" />
           <StatCard label="Open Roles" value={3} />
@@ -63,10 +63,10 @@ export default function EmployerDashboard() {
 
         {/* Recent activity (simple mock list) */}
         <Card className="mb-6">
-          <h3 className="mb-4 font-semibold text-gray-800">Recent Activity</h3>
+          <h3 className="card-title mb-4">Recent Activity</h3>
           <div className="space-y-3 text-sm">
             {recentActivity.map((item, index) => (
-              <div key={index} className="flex justify-between border-b border-gray-100 pb-2">
+              <div key={index} className="activity-row">
                 <span className="text-gray-600">{item.text}</span>
                 <span className="text-gray-400">{item.time}</span>
               </div>
@@ -77,7 +77,7 @@ export default function EmployerDashboard() {
         <h2 className="mb-4 text-xl font-bold text-gray-800">Find Candidates</h2>
 
         {/* Search + filter */}
-        <div className="mb-6 flex flex-col gap-3 sm:flex-row">
+        <div className="filter-bar">
           <div className="flex-1">
             <Input
               value={search}
@@ -88,7 +88,7 @@ export default function EmployerDashboard() {
           <select
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
-            className="h-10 rounded-lg border border-gray-300 px-3 text-sm focus:border-[#3199CC] focus:outline-none"
+            className="filter-select"
           >
             <option>All</option>
             <option>Open to work</option>
@@ -101,7 +101,7 @@ export default function EmployerDashboard() {
         {candidates.length === 0 ? (
           <EmptyState message="No candidates match your search." />
         ) : (
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="card-grid">
             {candidates.map((student) => (
               <Card key={student.id}>
                 <div className="mb-2 flex items-center justify-between">
@@ -140,7 +140,7 @@ export default function EmployerDashboard() {
         {savedCandidates.length === 0 ? (
           <EmptyState message="You haven't saved any candidates yet." />
         ) : (
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="card-grid">
             {savedCandidates.map((student) => (
               <Card key={student.id}>
                 <h3 className="font-semibold text-gray-800">{student.name}</h3>

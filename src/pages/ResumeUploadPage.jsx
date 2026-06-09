@@ -28,23 +28,21 @@ export default function ResumeUploadPage() {
   }
 
   return (
-    <div className="flex flex-col md:flex-row">
+    <div className="page-shell">
       <Sidebar title="Student" links={studentLinks} />
 
-      <main className="flex-1 p-6">
-        <h1 className="mb-6 text-2xl font-bold text-gray-800">Resume</h1>
+      <main className="page-main">
+        <h1 className="page-header">Resume</h1>
 
-        {message && (
-          <p className="mb-4 rounded-lg bg-green-50 p-2 text-sm text-green-700">{message}</p>
-        )}
+        {message && <p className="alert-success">{message}</p>}
 
-        <div className="grid gap-6 lg:grid-cols-2">
+        <div className="content-grid">
           {/* Upload area + metadata */}
           <div className="space-y-6">
             <Card>
-              <h3 className="mb-3 font-semibold text-gray-800">Upload / Replace Resume</h3>
+              <h3 className="card-title">Upload / Replace Resume</h3>
               {/* Fake drag-and-drop box */}
-              <div className="flex flex-col items-center rounded-lg border-2 border-dashed border-gray-300 p-8 text-center">
+              <div className="upload-box p-8">
                 <Upload className="mb-2 h-8 w-8 text-gray-400" />
                 <p className="text-sm text-gray-500">Drag a PDF here, or click to upload</p>
                 <div className="mt-3">
@@ -55,7 +53,7 @@ export default function ResumeUploadPage() {
 
             {/* Resume metadata card */}
             <Card>
-              <h3 className="mb-3 font-semibold text-gray-800">Resume Details</h3>
+              <h3 className="card-title">Resume Details</h3>
               <div className="flex items-center gap-3">
                 <FileText className="h-8 w-8 text-[#001776]" />
                 <div>
@@ -76,10 +74,8 @@ export default function ResumeUploadPage() {
           <div className="space-y-6">
             {/* Simple preview box */}
             <Card>
-              <h3 className="mb-3 font-semibold text-gray-800">Preview</h3>
-              <div className="flex h-48 items-center justify-center rounded-lg bg-gray-100 text-sm text-gray-400">
-                Resume preview (mock)
-              </div>
+              <h3 className="card-title">Preview</h3>
+              <div className="preview-box h-48">Resume preview (mock)</div>
             </Card>
 
             {/* AI resume review panel (fake AI) */}

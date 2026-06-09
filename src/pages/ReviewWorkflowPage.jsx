@@ -41,19 +41,17 @@ export default function ReviewWorkflowPage() {
   }
 
   return (
-    <div className="flex flex-col md:flex-row">
+    <div className="page-shell">
       <Sidebar title="Student" links={studentLinks} />
 
-      <main className="flex-1 p-6">
-        <h1 className="mb-6 text-2xl font-bold text-gray-800">Review Workflow</h1>
+      <main className="page-main">
+        <h1 className="page-header">Review Workflow</h1>
 
-        {message && (
-          <p className="mb-4 rounded-lg bg-green-50 p-2 text-sm text-green-700">{message}</p>
-        )}
+        {message && <p className="alert-success">{message}</p>}
 
         {/* Status steps */}
         <Card className="mb-6">
-          <h3 className="mb-3 font-semibold text-gray-800">Status</h3>
+          <h3 className="card-title">Status</h3>
           <div className="flex flex-wrap gap-2">
             {statuses.map((status) => (
               <Badge
@@ -75,10 +73,10 @@ export default function ReviewWorkflowPage() {
 
         {/* Reviewer feedback timeline */}
         <Card>
-          <h3 className="mb-4 font-semibold text-gray-800">Feedback Timeline</h3>
+          <h3 className="card-title mb-4">Feedback Timeline</h3>
           <div className="space-y-4">
             {myFeedback.map((item) => (
-              <div key={item.id} className="border-l-2 border-[#3199CC]/30 pl-4">
+              <div key={item.id} className="timeline-item pl-4">
                 <div className="flex items-center gap-2">
                   <Badge text={item.status} color={statusColor(item.status)} />
                   <span className="text-xs text-gray-400">{item.date}</span>

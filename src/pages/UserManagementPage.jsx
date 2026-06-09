@@ -41,14 +41,14 @@ export default function UserManagementPage() {
   });
 
   return (
-    <div className="flex flex-col md:flex-row">
+    <div className="page-shell">
       <Sidebar title="Admin" links={adminLinks} />
 
-      <main className="flex-1 p-6">
-        <h1 className="mb-6 text-2xl font-bold text-gray-800">User Management</h1>
+      <main className="page-main">
+        <h1 className="page-header">User Management</h1>
 
         {/* Search + role filter */}
-        <div className="mb-6 flex flex-col gap-3 sm:flex-row">
+        <div className="filter-bar">
           <div className="flex-1">
             <Input
               value={search}
@@ -59,7 +59,7 @@ export default function UserManagementPage() {
           <select
             value={roleFilter}
             onChange={(e) => setRoleFilter(e.target.value)}
-            className="h-10 rounded-lg border border-gray-300 px-3 text-sm focus:border-[#3199CC] focus:outline-none"
+            className="filter-select"
           >
             <option>All</option>
             <option>Student</option>
@@ -77,10 +77,7 @@ export default function UserManagementPage() {
               {visibleUsers.map((user) => {
                 const isActive = activeUsers.includes(user.id);
                 return (
-                  <div
-                    key={user.id}
-                    className="flex flex-col gap-2 rounded-lg border border-gray-100 p-3 sm:flex-row sm:items-center sm:justify-between"
-                  >
+                  <div key={user.id} className="list-row-responsive">
                     <div>
                       <p className="font-medium text-gray-800">{user.name}</p>
                       <p className="text-xs text-gray-500">{user.email}</p>

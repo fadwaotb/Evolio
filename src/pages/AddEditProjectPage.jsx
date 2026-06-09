@@ -42,23 +42,19 @@ export default function AddEditProjectPage() {
   }
 
   return (
-    <div className="flex flex-col md:flex-row">
+    <div className="page-shell">
       <Sidebar title="Student" links={studentLinks} />
 
-      <main className="flex-1 p-6">
-        <h1 className="mb-6 text-2xl font-bold text-gray-800">
+      <main className="page-main">
+        <h1 className="page-header">
           {editing ? "Edit Project" : "Add Project"}
         </h1>
 
-        <div className="grid gap-6 lg:grid-cols-3">
+        <div className="content-grid-3">
           {/* The form takes 2 columns */}
           <div className="lg:col-span-2">
             <Card>
-              {saved && (
-                <p className="mb-4 rounded-lg bg-green-50 p-2 text-sm text-green-700">
-                  Project saved! Redirecting...
-                </p>
-              )}
+              {saved && <p className="alert-success">Project saved! Redirecting...</p>}
 
               <form onSubmit={handleSave}>
                 <Input label="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
@@ -87,10 +83,8 @@ export default function AddEditProjectPage() {
 
                 {/* Screenshot uploader (fake UI only) */}
                 <div className="mb-4">
-                  <label className="mb-1 block text-sm font-medium text-gray-700">
-                    Screenshots
-                  </label>
-                  <div className="flex flex-col items-center rounded-lg border-2 border-dashed border-gray-300 p-6 text-center">
+                  <label className="form-label">Screenshots</label>
+                  <div className="upload-box p-6">
                     <ImagePlus className="mb-2 h-7 w-7 text-gray-400" />
                     <p className="text-sm text-gray-500">Click to add screenshots</p>
                   </div>
@@ -98,11 +92,11 @@ export default function AddEditProjectPage() {
 
                 {/* Status dropdown */}
                 <div className="mb-4">
-                  <label className="mb-1 block text-sm font-medium text-gray-700">Status</label>
+                  <label className="form-label">Status</label>
                   <select
                     value={status}
                     onChange={(e) => setStatus(e.target.value)}
-                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-[#3199CC] focus:outline-none"
+                    className="form-input"
                   >
                     <option>Draft</option>
                     <option>Published</option>

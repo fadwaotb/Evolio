@@ -19,20 +19,15 @@ import {
 // A simple button with a few color "variants".
 // -------------------------------------------------------------
 export function Button({ children, onClick, variant = "primary", type = "button" }) {
-  // Pick the right Tailwind classes based on the variant (Evolio brand colors)
-  let styles = "bg-[#001776] text-white hover:bg-[#001456]"; // primary (deep navy)
-  if (variant === "teal") styles = "bg-[#199DB2] text-white hover:bg-[#147d8f]"; // secondary
-  if (variant === "accent") styles = "bg-[#3199CC] text-white hover:bg-[#2b86b3]"; // accent
-  if (variant === "outline")
-    styles = "bg-white text-[#001776] border border-[#001776] hover:bg-[#F0F4FF]";
-  if (variant === "danger") styles = "bg-red-600 text-white hover:bg-red-700";
+  // Pick the right CSS class based on the variant (see index.css)
+  let styles = "primary-btn"; // primary (deep navy)
+  if (variant === "teal") styles = "secondary-btn"; // secondary
+  if (variant === "accent") styles = "accent-btn"; // accent
+  if (variant === "outline") styles = "outline-btn";
+  if (variant === "danger") styles = "danger-btn";
 
   return (
-    <button
-      type={type}
-      onClick={onClick}
-      className={`rounded-lg px-4 py-2 text-sm font-medium transition ${styles}`}
-    >
+    <button type={type} onClick={onClick} className={styles}>
       {children}
     </button>
   );
@@ -43,11 +38,7 @@ export function Button({ children, onClick, variant = "primary", type = "button"
 // A white rounded box used everywhere.
 // -------------------------------------------------------------
 export function Card({ children, className = "" }) {
-  return (
-    <div className={`rounded-xl border border-[#DDE7F0] bg-white p-5 shadow-sm ${className}`}>
-      {children}
-    </div>
-  );
+  return <div className={`section-card ${className}`}>{children}</div>;
 }
 
 // -------------------------------------------------------------
@@ -55,20 +46,16 @@ export function Card({ children, className = "" }) {
 // A small colored label (good for statuses).
 // -------------------------------------------------------------
 export function Badge({ text, color = "blue" }) {
-  // Map a color name to Tailwind classes
+  // Map a color name to its badge CSS class (see index.css)
   const colors = {
-    blue: "bg-[#E6F2FA] text-[#001776]",
-    teal: "bg-[#E1F4F7] text-[#147d8f]",
-    green: "bg-green-50 text-green-700",
-    yellow: "bg-yellow-50 text-yellow-700",
-    red: "bg-red-50 text-red-700",
-    gray: "bg-gray-100 text-gray-700",
+    blue: "badge-blue",
+    teal: "badge-teal",
+    green: "badge-success",
+    yellow: "badge-warning",
+    red: "badge-error",
+    gray: "badge-gray",
   };
-  return (
-    <span className={`rounded-full px-3 py-1 text-xs font-medium ${colors[color] || colors.blue}`}>
-      {text}
-    </span>
-  );
+  return <span className={`badge ${colors[color] || colors.blue}`}>{text}</span>;
 }
 
 // -------------------------------------------------------------
@@ -78,13 +65,13 @@ export function Badge({ text, color = "blue" }) {
 export function Input({ label, value, onChange, type = "text", placeholder = "" }) {
   return (
     <div className="mb-4">
-      {label && <label className="mb-1 block text-sm font-medium text-gray-700">{label}</label>}
+      {label && <label className="form-label">{label}</label>}
       <input
         type={type}
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-[#3199CC] focus:outline-none"
+        className="form-input"
       />
     </div>
   );
@@ -97,13 +84,13 @@ export function Input({ label, value, onChange, type = "text", placeholder = "" 
 export function Textarea({ label, value, onChange, placeholder = "", rows = 4 }) {
   return (
     <div className="mb-4">
-      {label && <label className="mb-1 block text-sm font-medium text-gray-700">{label}</label>}
+      {label && <label className="form-label">{label}</label>}
       <textarea
         value={value}
         onChange={onChange}
         placeholder={placeholder}
         rows={rows}
-        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-[#3199CC] focus:outline-none"
+        className="form-input"
       />
     </div>
   );
@@ -117,8 +104,8 @@ export function Modal({ open, onClose, title, children }) {
   if (!open) return null; // don't render anything when closed
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-      <div className="w-full max-w-lg rounded-xl bg-white p-6 shadow-lg">
+    <div className="modal-backdrop">
+      <div className="modal-card">
         <div className="mb-4 flex items-center justify-between">
           <h3 className="text-lg font-semibold text-gray-800">{title}</h3>
           <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
@@ -243,7 +230,7 @@ export function Navbar() {
 // -------------------------------------------------------------
 export function Sidebar({ title, links }) {
   return (
-    <aside className="w-full shrink-0 border-b border-[#001456] bg-[#001776] p-4 md:min-h-screen md:w-60 md:border-b-0 md:border-r">
+    <aside className="sidebar">
       {/* Logo / title (logo sits on a white chip so it reads on the navy bg) */}
       <Link to="/" className="mb-6 flex items-center gap-2 text-lg font-bold text-white">
         <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-white p-1">
@@ -262,11 +249,7 @@ export function Sidebar({ title, links }) {
             to={link.to}
             end
             className={({ isActive }) =>
-              `rounded-lg px-3 py-2 text-sm transition ${
-                isActive
-                  ? "bg-[#199DB2] text-white"
-                  : "text-white/70 hover:bg-white/10 hover:text-white"
-              }`
+              `sidebar-link ${isActive ? "sidebar-link-active" : "sidebar-link-idle"}`
             }
           >
             {link.label}
@@ -298,7 +281,7 @@ export function AIBox({ title, buttonLabel = "Generate with AI", result }) {
   }
 
   return (
-    <Card className="border-[#199DB2]/30 bg-[#E1F4F7]">
+    <div className="ai-box">
       <div className="mb-3 flex items-center gap-2">
         <Sparkles className="h-5 w-5 text-[#199DB2]" />
         <h3 className="font-semibold text-gray-800">{title}</h3>
@@ -308,7 +291,7 @@ export function AIBox({ title, buttonLabel = "Generate with AI", result }) {
       {loading ? (
         <LoadingState message="AI is thinking..." />
       ) : showResult ? (
-        <div className="mb-3 rounded-lg bg-white p-3 text-sm text-gray-700">{result}</div>
+        <div className="ai-result">{result}</div>
       ) : (
         <p className="mb-3 text-sm text-gray-500">Click the button to get AI suggestions.</p>
       )}
@@ -316,7 +299,7 @@ export function AIBox({ title, buttonLabel = "Generate with AI", result }) {
       <Button variant="teal" onClick={runFakeAI}>
         {buttonLabel}
       </Button>
-    </Card>
+    </div>
   );
 }
 

@@ -26,14 +26,12 @@ export default function EmployerLoginPage() {
     <div>
       <Navbar />
 
-      <div className="mx-auto max-w-md px-6 py-12">
-        <h1 className="mb-6 text-center text-2xl font-bold text-gray-800">Employer Login</h1>
+      <div className="auth-container">
+        <h1 className="auth-title">Employer Login</h1>
 
         <Card>
           <form onSubmit={handleLogin}>
-            {error && (
-              <p className="mb-4 rounded-lg bg-red-50 p-2 text-sm text-red-600">{error}</p>
-            )}
+            {error && <p className="alert-error">{error}</p>}
 
             <Input
               label="Work Email"

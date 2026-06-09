@@ -34,19 +34,15 @@ export default function ProfileEditorPage() {
   }
 
   return (
-    <div className="flex flex-col md:flex-row">
+    <div className="page-shell">
       <Sidebar title="Student" links={studentLinks} />
 
-      <main className="flex-1 p-6">
-        <h1 className="mb-6 text-2xl font-bold text-gray-800">Edit Profile</h1>
+      <main className="page-main">
+        <h1 className="page-header">Edit Profile</h1>
 
         <Card className="max-w-2xl">
           {/* Success message after saving */}
-          {saved && (
-            <p className="mb-4 rounded-lg bg-green-50 p-2 text-sm text-green-700">
-              Profile saved successfully!
-            </p>
-          )}
+          {saved && <p className="alert-success">Profile saved successfully!</p>}
 
           <form onSubmit={handleSave}>
             <Input label="Name" value={name} onChange={(e) => setName(e.target.value)} />
@@ -81,13 +77,11 @@ export default function ProfileEditorPage() {
 
             {/* Availability status dropdown */}
             <div className="mb-4">
-              <label className="mb-1 block text-sm font-medium text-gray-700">
-                Availability Status
-              </label>
+              <label className="form-label">Availability Status</label>
               <select
                 value={availability}
                 onChange={(e) => setAvailability(e.target.value)}
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-[#3199CC] focus:outline-none"
+                className="form-input"
               >
                 <option>Open to work</option>
                 <option>Interviewing</option>

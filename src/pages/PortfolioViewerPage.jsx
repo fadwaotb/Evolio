@@ -33,9 +33,9 @@ export default function PortfolioViewerPage() {
   // If the student id is wrong, show an error state
   if (!student) {
     return (
-      <div className="flex flex-col md:flex-row">
+      <div className="page-shell">
         <Sidebar title="Employer" links={employerLinks} />
-        <main className="flex-1 p-6">
+        <main className="page-main">
           <ErrorState message="Sorry, we could not find this candidate." />
         </main>
       </div>
@@ -55,21 +55,19 @@ export default function PortfolioViewerPage() {
   }
 
   return (
-    <div className="flex flex-col md:flex-row">
+    <div className="page-shell">
       <Sidebar title="Employer" links={employerLinks} />
 
-      <main className="flex-1 p-6">
-        <h1 className="mb-6 text-2xl font-bold text-gray-800">Candidate Portfolio</h1>
+      <main className="page-main">
+        <h1 className="page-header">Candidate Portfolio</h1>
 
-        <div className="grid gap-6 lg:grid-cols-3">
+        <div className="content-grid-3">
           {/* Left: profile, resume, projects */}
           <div className="space-y-6 lg:col-span-2">
             {/* Profile */}
             <Card>
               <div className="flex items-center gap-4">
-                <div
-                  className={`flex h-16 w-16 items-center justify-center rounded-full text-xl font-bold text-white ${student.avatarColor}`}
-                >
+                <div className={`avatar ${student.avatarColor}`}>
                   {student.name.charAt(0)}
                 </div>
                 <div>
@@ -83,10 +81,8 @@ export default function PortfolioViewerPage() {
 
             {/* Resume preview */}
             <Card>
-              <h3 className="mb-3 font-semibold text-gray-800">Resume</h3>
-              <div className="flex h-40 items-center justify-center rounded-lg bg-gray-100 text-sm text-gray-400">
-                Resume preview (mock)
-              </div>
+              <h3 className="card-title">Resume</h3>
+              <div className="preview-box h-40">Resume preview (mock)</div>
               <div className="mt-3">
                 <Button variant="outline">Download Resume</Button>
               </div>
@@ -94,10 +90,10 @@ export default function PortfolioViewerPage() {
 
             {/* Projects with evaluation note */}
             <Card>
-              <h3 className="mb-3 font-semibold text-gray-800">Projects</h3>
+              <h3 className="card-title">Projects</h3>
               <div className="space-y-4">
                 {studentProjects.map((p) => (
-                  <div key={p.id} className="rounded-lg border border-gray-100 p-4">
+                  <div key={p.id} className="project-item">
                     <h4 className="font-medium text-gray-800">{p.title}</h4>
                     <p className="text-sm text-gray-500">{p.summary}</p>
 
@@ -128,7 +124,7 @@ export default function PortfolioViewerPage() {
           <div className="space-y-6">
             {/* Quick actions */}
             <Card>
-              <h3 className="mb-3 font-semibold text-gray-800">Actions</h3>
+              <h3 className="card-title">Actions</h3>
               <div className="flex flex-col gap-2">
                 <Button onClick={() => navigate("/employer/messages")}>Contact Student</Button>
                 <Button variant="teal" onClick={() => setSaved(!saved)}>
@@ -139,12 +135,8 @@ export default function PortfolioViewerPage() {
 
             {/* Leave feedback */}
             <Card>
-              <h3 className="mb-3 font-semibold text-gray-800">Leave Feedback</h3>
-              {feedbackSent && (
-                <p className="mb-2 rounded-lg bg-green-50 p-2 text-sm text-green-700">
-                  Feedback sent!
-                </p>
-              )}
+              <h3 className="card-title">Leave Feedback</h3>
+              {feedbackSent && <p className="alert-success mb-2">Feedback sent!</p>}
               <Textarea
                 value={feedback}
                 onChange={(e) => setFeedback(e.target.value)}

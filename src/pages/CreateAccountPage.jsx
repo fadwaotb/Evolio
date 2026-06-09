@@ -46,8 +46,8 @@ export default function CreateAccountPage() {
     <div>
       <Navbar />
 
-      <div className="mx-auto max-w-md px-6 py-12">
-        <h1 className="mb-6 text-center text-2xl font-bold text-gray-800">Create Your Account</h1>
+      <div className="auth-container">
+        <h1 className="auth-title">Create Your Account</h1>
 
         <Card>
           {/* Success message after creating account */}
@@ -57,9 +57,7 @@ export default function CreateAccountPage() {
             </p>
           ) : (
             <form onSubmit={handleSubmit}>
-              {error && (
-                <p className="mb-4 rounded-lg bg-red-50 p-2 text-sm text-red-600">{error}</p>
-              )}
+              {error && <p className="alert-error">{error}</p>}
 
               <Input label="Full Name" value={name} onChange={(e) => setName(e.target.value)} />
               <Input
@@ -83,11 +81,11 @@ export default function CreateAccountPage() {
 
               {/* Role selector */}
               <div className="mb-4">
-                <label className="mb-1 block text-sm font-medium text-gray-700">Role</label>
+                <label className="form-label">Role</label>
                 <select
                   value={role}
                   onChange={(e) => setRole(e.target.value)}
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-[#3199CC] focus:outline-none"
+                  className="form-input"
                 >
                   {roles.map((r) => (
                     <option key={r}>{r}</option>
