@@ -107,14 +107,29 @@ export const admins = [
 ];
 
 // ---- Projects ----
+// Helper: build a lightweight inline-SVG placeholder image so every project
+// has visual representation in the prototype even before real screenshots are
+// uploaded. Returns a data URL (no network request, no extra files needed).
+function shot(label, bg) {
+  const svg =
+    `<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='750'>` +
+    `<rect width='100%' height='100%' fill='${bg}'/>` +
+    `<text x='50%' y='50%' font-family='Arial, sans-serif' font-size='52' fill='white' ` +
+    `font-weight='bold' text-anchor='middle' dominant-baseline='middle'>${label}</text>` +
+    `</svg>`;
+  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+}
+
 export const projects = [
   {
     id: "p1",
     studentId: "s1",
     title: "Weather Dashboard",
+    category: "Web Application",
+    completionDate: "March 2026",
     summary: "A clean weather app using a public API.",
     description:
-      "Built with React. Shows current weather and a 5 day forecast. Focused on responsive design and clean components.",
+      "A responsive weather dashboard built with React.\n\nIt shows the current conditions and a 5-day forecast for any city, pulling live data from a public weather API. The focus was on clean, reusable components and a layout that works well on both mobile and desktop.",
     techStack: ["React", "CSS", "API"],
     github: "https://github.com/aisha/weather",
     demo: "https://weather.example.com",
@@ -122,14 +137,26 @@ export const projects = [
     featured: true,
     views: 120,
     collaborators: ["Marcus Lee"],
+    role: "Frontend Developer",
+    projectType: "Personal Project",
+    stage: "Completed", // Completed / In Progress
+    teamSize: 2,
+    // First screenshot is the primary/hero image. data URLs of uploaded images.
+    screenshots: [
+      shot("Weather Dashboard — Home", "#001776"),
+      shot("5-Day Forecast", "#199DB2"),
+      shot("Mobile View", "#3199CC"),
+    ],
   },
   {
     id: "p2",
     studentId: "s1",
     title: "Recipe Finder",
+    category: "Web Application",
+    completionDate: "",
     summary: "Search recipes by ingredients you already have.",
     description:
-      "A simple recipe search tool. Users type ingredients and get matching meals. Used React state to filter results.",
+      "A simple recipe search tool. Users type in the ingredients they already have at home and get a list of matching meals.\n\nReact state is used to filter the results instantly as you type.",
     techStack: ["React", "Tailwind CSS"],
     github: "https://github.com/aisha/recipes",
     demo: "",
@@ -137,21 +164,40 @@ export const projects = [
     featured: false,
     views: 35,
     collaborators: [],
+    role: "", // solo project — role section is hidden when empty
+    projectType: "Personal Project",
+    stage: "In Progress",
+    teamSize: 1,
+    screenshots: [
+      shot("Recipe Finder — Search", "#199DB2"),
+      shot("Results List", "#3199CC"),
+    ],
   },
   {
     id: "p3",
     studentId: "s2",
     title: "Task Manager",
+    category: "Full Stack Application",
+    completionDate: "January 2026",
     summary: "A to-do app with categories and progress tracking.",
     description:
-      "Full stack task manager. Frontend in React, mock data only for this demo version.",
-    techStack: ["React", "Node.js"],
+      "A full-stack task manager that lets users organise to-dos into categories and track their progress.\n\nThe frontend is built in React, backed by a Node.js API. This demo version runs on mock data.",
+    techStack: ["React", "Node.js", "Express", "MongoDB"],
     github: "https://github.com/marcus/tasks",
     demo: "https://tasks.example.com",
     status: "Published",
     featured: true,
     views: 90,
     collaborators: ["Priya Patel"],
+    role: "Full Stack Developer",
+    projectType: "Academic Project",
+    stage: "Completed",
+    teamSize: 2,
+    screenshots: [
+      shot("Task Manager — Board", "#001776"),
+      shot("Categories", "#199DB2"),
+      shot("Progress Tracking", "#3199CC"),
+    ],
   },
 ];
 

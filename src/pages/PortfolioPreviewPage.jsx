@@ -80,6 +80,15 @@ export default function PortfolioPreviewPage() {
               <div className="space-y-4">
                 {featured.map((p) => (
                   <div key={p.id} className="project-item">
+                    {/* Screenshot above the title, spanning the full item width */}
+                    {p.screenshots?.[0] && (
+                      <img
+                        src={p.screenshots[0]}
+                        alt={`${p.title} screenshot`}
+                        className="-mx-4 -mt-4 mb-4 h-44 w-[calc(100%+2rem)] max-w-none rounded-t-lg object-cover"
+                        loading="lazy"
+                      />
+                    )}
                     <h4 className="font-medium text-gray-800">{p.title}</h4>
                     <p className="text-sm text-gray-500">{p.summary}</p>
 

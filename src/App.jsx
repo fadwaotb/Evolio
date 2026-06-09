@@ -18,6 +18,7 @@ import ReviewWorkflowPage from "./pages/ReviewWorkflowPage.jsx";
 import EmployerLoginPage from "./pages/EmployerLoginPage.jsx";
 import EmployerDashboard from "./pages/EmployerDashboard.jsx";
 import PortfolioViewerPage from "./pages/PortfolioViewerPage.jsx";
+import ProjectDetailsPage from "./pages/ProjectDetailsPage.jsx";
 import EmployerMessagingPage from "./pages/EmployerMessagingPage.jsx";
 
 // Career coach pages
@@ -57,6 +58,10 @@ export default function App() {
       <Route path="/employer/login" element={<EmployerLoginPage />} />
       <Route path="/employer/dashboard" element={<EmployerDashboard />} />
       <Route path="/employer/portfolio/:studentId" element={<PortfolioViewerPage />} />
+      <Route
+        path="/employer/portfolio/:studentId/project/:projectId"
+        element={<ProjectDetailsPage />}
+      />
       <Route path="/employer/messages" element={<EmployerMessagingPage />} />
 
       {/* Career coach routes */}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   Sidebar,
@@ -10,7 +10,7 @@ import {
   AIBox,
 } from "../components/Components.jsx";
 import { projects, aiFeedback } from "../data.js";
-import { ImagePlus } from "lucide-react";
+import { ImagePlus, X } from "lucide-react";
 
 // Add/Edit Project Page - one form used for BOTH adding and editing.
 // If there is a :projectId in the URL we are editing, otherwise adding.
@@ -32,11 +32,34 @@ export default function AddEditProjectPage() {
   const [collaborators, setCollaborators] = useState(
     editing ? editing.collaborators.join(", ") : ""
   );
+  // Screenshot is stored as a data URL so it can be previewed without a backend.
+  // Projects keep a `screenshots` array; here we edit the primary (first) one.
+  const [screenshot, setScreenshot] = useState(
+    editing && editing.screenshots ? editing.screenshots[0] || "" : ""
+  );
   const [saved, setSaved] = useState(false);
+
+  // Hidden file input we trigger by clicking the upload box
+  const fileInputRef = useRef(null);
+
+  // Read the chosen image file into a data URL so we can preview it
+  function handleScreenshotChange(e) {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => setScreenshot(reader.result);
+    reader.readAsDataURL(file);
+  }
 
   // Fake save - shows a message then goes back to the projects list
   function handleSave(e) {
     e.preventDefault();
+    // No backend: persist the screenshot onto the mock project so it shows
+    // up in the projects list and portfolio previews during this session.
+    if (editing) {
+      const rest = (editing.screenshots || []).slice(1);
+      editing.screenshots = screenshot ? [screenshot, ...rest] : rest;
+    }
     setSaved(true);
     setTimeout(() => navigate("/student/projects"), 1200);
   }
@@ -81,13 +104,61 @@ export default function AddEditProjectPage() {
                 />
                 <Input label="Demo Link" value={demo} onChange={(e) => setDemo(e.target.value)} />
 
-                {/* Screenshot uploader (fake UI only) */}
+                {/* Screenshot uploader */}
                 <div className="mb-4">
-                  <label className="form-label">Screenshots</label>
-                  <div className="upload-box p-6">
-                    <ImagePlus className="mb-2 h-7 w-7 text-gray-400" />
-                    <p className="text-sm text-gray-500">Click to add screenshots</p>
-                  </div>
+                  <label className="form-label">Screenshot</label>
+
+                  {/* Hidden file input, triggered by clicking the box below */}
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleScreenshotChange}
+                  />
+
+                  {screenshot ? (
+                    // Preview the chosen screenshot with a remove button
+                    <div className="relative">
+                      <img
+                        src={screenshot}
+                        alt="Project screenshot preview"
+                        className="w-full rounded-lg border border-gray-200 object-cover"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setScreenshot("");
+                          if (fileInputRef.current) fileInputRef.current.value = "";
+                        }}
+                        className="absolute right-2 top-2 rounded-full bg-white/90 p-1 text-gray-600 shadow hover:bg-white"
+                        aria-label="Remove screenshot"
+                      >
+                        <X className="h-4 w-4" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => fileInputRef.current && fileInputRef.current.click()}
+                        className="mt-2 text-sm text-[#199DB2] hover:underline"
+                      >
+                        Replace screenshot
+                      </button>
+                    </div>
+                  ) : (
+                    <div
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => fileInputRef.current && fileInputRef.current.click()}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ")
+                          fileInputRef.current && fileInputRef.current.click();
+                      }}
+                      className="upload-box cursor-pointer p-6 hover:border-[#3199CC]"
+                    >
+                      <ImagePlus className="mb-2 h-7 w-7 text-gray-400" />
+                      <p className="text-sm text-gray-500">Click to add a screenshot</p>
+                    </div>
+                  )}
                 </div>
 
                 {/* Status dropdown */}

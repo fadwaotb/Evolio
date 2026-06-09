@@ -94,6 +94,15 @@ export default function ProjectsListPage() {
           <div className="card-grid">
             {visibleProjects.map((project) => (
               <Card key={project.id}>
+                {/* Screenshot above the title, spanning the full card width */}
+                {project.screenshots?.[0] && (
+                  <img
+                    src={project.screenshots[0]}
+                    alt={`${project.title} screenshot`}
+                    className="-mx-5 -mt-5 mb-4 h-40 w-[calc(100%+2.5rem)] max-w-none rounded-t-xl object-cover"
+                    loading="lazy"
+                  />
+                )}
                 <div className="mb-2 flex items-center justify-between">
                   <h3 className="font-semibold text-gray-800">{project.title}</h3>
                   {project.featured && <Badge text="Featured" color="teal" />}
