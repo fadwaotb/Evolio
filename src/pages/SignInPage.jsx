@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Navbar, Card, Input, Button } from "../components/Components.jsx";
+import { loginUser, setToken } from "../services/api.js";
 
-// Sign In Page - mock login that redirects based on the chosen role.
+// Sign In Page - logs in against the backend and stores the auth token.
 export default function SignInPage() {
   const navigate = useNavigate();
 
@@ -12,11 +13,11 @@ export default function SignInPage() {
   const [role, setRole] = useState("Student");
   const [error, setError] = useState("");
 
-  // The 4 roles a user can log in as
-  const roles = ["Student", "Employer", "Career Coach", "Admin"];
+  // Only Student and Employer accounts are supported by the backend for now.
+  const roles = ["Student", "Employer"];
 
-  // Handle the login button (no real auth - just redirect)
-  function handleLogin(e) {
+  // Handle the login button - calls the backend, saves the token, redirects.
+  async function handleLogin(e) {
     e.preventDefault();
 
     // Very basic validation
@@ -26,11 +27,16 @@ export default function SignInPage() {
     }
     setError("");
 
-    // Send the user to the right dashboard based on their role
-    if (role === "Student") navigate("/student/dashboard");
-    if (role === "Employer") navigate("/employer/dashboard");
-    if (role === "Career Coach") navigate("/coach/dashboard");
-    if (role === "Admin") navigate("/admin/dashboard");
+    try {
+      const data = await loginUser({ email, password, role });
+      setToken(data.access_token);
+
+      // Send the user to the right dashboard based on their role.
+      if (data.role === "student") navigate("/student/dashboard");
+      else if (data.role === "employer") navigate("/employer/dashboard");
+    } catch (err) {
+      setError(err.message || "Login failed. Please try again.");
+    }
   }
 
   return (
