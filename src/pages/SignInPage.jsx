@@ -13,8 +13,8 @@ export default function SignInPage() {
   const [role, setRole] = useState("Student");
   const [error, setError] = useState("");
 
-  // Only Student and Employer accounts are supported by the backend for now.
-  const roles = ["Student", "Employer"];
+  // All four account types can sign in.
+  const roles = ["Student", "Employer", "Career Coach", "Admin"];
 
   // Handle the login button - calls the backend, saves the token, redirects.
   async function handleLogin(e) {
@@ -34,6 +34,8 @@ export default function SignInPage() {
       // Send the user to the right dashboard based on their role.
       if (data.role === "student") navigate("/student/dashboard");
       else if (data.role === "employer") navigate("/employer/dashboard");
+      else if (data.role === "coach") navigate("/coach/dashboard");
+      else if (data.role === "admin") navigate("/admin/dashboard");
     } catch (err) {
       setError(err.message || "Login failed. Please try again.");
     }

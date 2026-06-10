@@ -1,8 +1,9 @@
 """
 Auth routes: register, login, and "who am I".
 
-Only students and employers are supported. Users are stored in the in-memory
-`users` dict for now.
+Students, employers, admins, and career coaches can all register and log in.
+(Only the auth flow is shared -- admin/coach-specific features are not built.)
+Users are stored in the in-memory `users` dict for now.
 """
 
 from fastapi import APIRouter, Depends, HTTPException
@@ -18,16 +19,22 @@ from schemas import LoginRequest, RegisterRequest, TokenResponse, UserOut
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
 
-# The only roles this limited backend accepts.
-ALLOWED_ROLES = {"student", "employer"}
+# Roles this backend accepts for auth. Note: only "student" gets access to the
+# student-only endpoints -- the other roles can sign in but have no extra
+# features in this phase.
+ALLOWED_ROLES = {"student", "employer", "admin", "coach"}
+
+# Map frontend display values to canonical role tokens.
+ROLE_ALIASES = {"career coach": "coach"}
 
 
 def _normalize_role(role: str) -> str:
     """
-    Accept the frontend's display values ("Student", "Employer") as well as
-    lowercase values, and return a clean lowercase role.
+    Accept the frontend's display values ("Student", "Career Coach", ...) and
+    return a clean canonical role token (e.g. "career coach" -> "coach").
     """
-    return (role or "").strip().lower()
+    cleaned = (role or "").strip().lower()
+    return ROLE_ALIASES.get(cleaned, cleaned)
 
 
 @router.post("/register", response_model=UserOut)
@@ -36,7 +43,7 @@ def register(data: RegisterRequest):
     if role not in ALLOWED_ROLES:
         raise HTTPException(
             status_code=400,
-            detail="Only Student and Employer accounts can be created.",
+            detail="Invalid account role.",
         )
 
     if get_user_by_email(data.email):
@@ -69,7 +76,7 @@ def login(data: LoginRequest):
         if requested_role not in ALLOWED_ROLES:
             raise HTTPException(
                 status_code=400,
-                detail="Only Student and Employer accounts can sign in.",
+                detail="Invalid account role.",
             )
         if requested_role != user["role"]:
             raise HTTPException(

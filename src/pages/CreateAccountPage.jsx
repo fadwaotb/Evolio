@@ -17,8 +17,8 @@ export default function CreateAccountPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
 
-  // Only Student and Employer accounts are supported by the backend for now.
-  const roles = ["Student", "Employer"];
+  // All four account types can be created.
+  const roles = ["Student", "Employer", "Career Coach", "Admin"];
 
   // Validate the form, then create the account through the backend.
   async function handleSubmit(e) {
