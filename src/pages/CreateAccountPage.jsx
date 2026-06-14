@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Navbar, Card, Input, Button } from "../components/Components.jsx";
+import { register } from "../api.js";
 
-// Create Account Page - simple sign up form with basic validation.
+// Create Account Page - real sign up against the backend.
 export default function CreateAccountPage() {
   const navigate = useNavigate();
 
@@ -18,8 +19,8 @@ export default function CreateAccountPage() {
 
   const roles = ["Student", "Employer", "Career Coach", "Admin"];
 
-  // Validate the form, then pretend to create the account.
-  function handleSubmit(e) {
+  // Validate the form, then create the account for real.
+  async function handleSubmit(e) {
     e.preventDefault();
 
     // Simple validation checks
@@ -36,10 +37,15 @@ export default function CreateAccountPage() {
       return;
     }
 
-    // All good - show success then redirect to sign in
     setError("");
-    setSuccess(true);
-    setTimeout(() => navigate("/sign-in"), 1200);
+    try {
+      // Creates the account AND logs us in (stores the token).
+      await register({ email, password, full_name: name, role });
+      setSuccess(true);
+      setTimeout(() => navigate("/sign-in"), 1200);
+    } catch (err) {
+      setError(err.message);
+    }
   }
 
   return (

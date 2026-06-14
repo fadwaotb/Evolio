@@ -2,3 +2,16 @@ node_modules/
 dist/
 .vite/
 .env
+
+# Python / backend
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Local database file and uploaded files (don't commit user data)
+backend/db/evolio.db
+backend/uploads/resumes/*
+backend/uploads/project_images/*
+!backend/uploads/resumes/.gitkeep
+!backend/uploads/project_images/.gitkeep

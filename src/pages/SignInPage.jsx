@@ -1,22 +1,28 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Navbar, Card, Input, Button } from "../components/Components.jsx";
+import { login } from "../api.js";
 
-// Sign In Page - mock login that redirects based on the chosen role.
+// Where each role lands after a successful login.
+const dashboardFor = {
+  Student: "/student/dashboard",
+  Employer: "/employer/dashboard",
+  "Career Coach": "/coach/dashboard",
+  Admin: "/admin/dashboard",
+};
+
+// Sign In Page - real login against the backend.
 export default function SignInPage() {
   const navigate = useNavigate();
 
   // Simple form state
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("Student");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  // The 4 roles a user can log in as
-  const roles = ["Student", "Employer", "Career Coach", "Admin"];
-
-  // Handle the login button (no real auth - just redirect)
-  function handleLogin(e) {
+  // Handle the login button (real auth via the API)
+  async function handleLogin(e) {
     e.preventDefault();
 
     // Very basic validation
@@ -25,12 +31,17 @@ export default function SignInPage() {
       return;
     }
     setError("");
+    setLoading(true);
 
-    // Send the user to the right dashboard based on their role
-    if (role === "Student") navigate("/student/dashboard");
-    if (role === "Employer") navigate("/employer/dashboard");
-    if (role === "Career Coach") navigate("/coach/dashboard");
-    if (role === "Admin") navigate("/admin/dashboard");
+    try {
+      // The backend tells us the real role from the account itself.
+      const { user } = await login({ email, password });
+      navigate(dashboardFor[user.role] || "/");
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -60,21 +71,7 @@ export default function SignInPage() {
               placeholder="••••••••"
             />
 
-            {/* Role selector */}
-            <div className="mb-4">
-              <label className="form-label">I am a...</label>
-              <select
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-                className="form-input"
-              >
-                {roles.map((r) => (
-                  <option key={r}>{r}</option>
-                ))}
-              </select>
-            </div>
-
-            <Button type="submit">Sign In</Button>
+            <Button type="submit">{loading ? "Signing in..." : "Sign In"}</Button>
           </form>
         </Card>
 

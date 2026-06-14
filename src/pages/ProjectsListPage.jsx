@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Sidebar,
@@ -11,19 +11,34 @@ import {
   EmptyState,
   LoadingState,
 } from "../components/Components.jsx";
-import { projects as allProjects, aiFeedback } from "../data.js";
+import { aiFeedback } from "../data.js";
+import {
+  listProjects,
+  deleteProject as apiDeleteProject,
+  fileUrl,
+  getToken,
+} from "../api.js";
 
-// Projects List Page - shows the student's projects with search/filter
-// plus add/edit/delete and a fake "Enhance with AI" feedback modal.
+// Turn a backend project into the shape this page's UI already expects.
+function toCard(p) {
+  return {
+    id: p.id,
+    title: p.title,
+    summary: p.summary || "",
+    techStack: p.tech_stack || [],
+    status: p.status || "Draft",
+    featured: p.is_featured,
+    screenshots: (p.screenshots || []).map(fileUrl),
+  };
+}
+
+// Projects List Page - real projects from the backend with search/filter,
+// add/edit/delete, and a fake "Enhance with AI" feedback modal.
 export default function ProjectsListPage() {
   const navigate = useNavigate();
 
-  // Keep projects in state so we can "delete" them (mock only)
-  // Only show projects that belong to student s1 (our mock user)
-  const [projects, setProjects] = useState(
-    allProjects.filter((p) => p.studentId === "s1")
-  );
-
+  const [projects, setProjects] = useState([]);
+  const [error, setError] = useState("");
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("All"); // All / Published / Draft
 
@@ -31,9 +46,25 @@ export default function ProjectsListPage() {
   const [aiOpen, setAiOpen] = useState(false);
   const [aiLoading, setAiLoading] = useState(false);
 
-  // Delete a project from the list
-  function deleteProject(id) {
-    setProjects(projects.filter((p) => p.id !== id));
+  // Load the student's projects from the backend.
+  useEffect(() => {
+    if (!getToken()) {
+      navigate("/sign-in");
+      return;
+    }
+    listProjects()
+      .then((list) => setProjects(list.map(toCard)))
+      .catch((err) => setError(err.message));
+  }, [navigate]);
+
+  // Delete a project for real, then drop it from the list.
+  async function deleteProject(id) {
+    try {
+      await apiDeleteProject(id);
+      setProjects((prev) => prev.filter((p) => p.id !== id));
+    } catch (err) {
+      setError(err.message);
+    }
   }
 
   // Open the AI feedback modal and fake a loading delay
@@ -61,6 +92,8 @@ export default function ProjectsListPage() {
             <Button>+ Add Project</Button>
           </Link>
         </div>
+
+        {error && <p className="alert-error">{error}</p>}
 
         {/* Search + filter controls */}
         <div className="filter-bar">

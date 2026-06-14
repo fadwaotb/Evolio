@@ -1,0 +1,8 @@
+# Backend dependencies for the Evolio portfolio API.
+# Install with:  pip install -r requirements.txt
+
+fastapi              # the web framework
+uvicorn              # the server that runs the app
+sqlalchemy           # talks to the SQLite database
+python-multipart     # needed by FastAPI to accept file uploads
+email-validator      # used by Pydantic EmailStr to validate emails

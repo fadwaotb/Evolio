@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Sidebar,
   studentLinks,
@@ -7,30 +8,68 @@ import {
   Textarea,
   Button,
 } from "../components/Components.jsx";
-import { students } from "../data.js";
+import { getProfile, saveProfile, getToken } from "../api.js";
 
-// Profile Editor Page - lets a student edit their profile info.
+// Profile Editor Page - lets a student edit their profile info (real backend).
 export default function ProfileEditorPage() {
-  // Start the form with the first student's data (mock "logged in" user)
-  const me = students[0];
+  const navigate = useNavigate();
 
-  const [name, setName] = useState(me.name);
-  const [headline, setHeadline] = useState(me.headline);
-  const [bio, setBio] = useState(me.bio);
-  const [skills, setSkills] = useState(me.skills.join(", "));
-  const [location, setLocation] = useState(me.location);
-  const [github, setGithub] = useState(me.github);
-  const [linkedin, setLinkedin] = useState(me.linkedin);
-  const [contactEmail, setContactEmail] = useState(me.email);
-  const [availability, setAvailability] = useState(me.availability);
+  const [name, setName] = useState("");
+  const [headline, setHeadline] = useState("");
+  const [bio, setBio] = useState("");
+  const [skills, setSkills] = useState(""); // comma-separated in the form
+  const [location, setLocation] = useState("");
+  const [github, setGithub] = useState("");
+  const [linkedin, setLinkedin] = useState("");
+  const [contactEmail, setContactEmail] = useState("");
+  const [availability, setAvailability] = useState("Open to work");
   const [saved, setSaved] = useState(false);
+  const [error, setError] = useState("");
 
-  // Fake save - just shows a success message
-  function handleSave(e) {
+  // Load the saved profile from the backend when the page opens.
+  useEffect(() => {
+    if (!getToken()) {
+      navigate("/sign-in");
+      return;
+    }
+    getProfile()
+      .then((p) => {
+        if (!p) return;
+        setName(p.name || "");
+        setHeadline(p.headline || "");
+        setBio(p.bio || "");
+        setSkills((p.skills || []).join(", "));
+        setLocation(p.location || "");
+        setGithub(p.github || "");
+        setLinkedin(p.linkedin || "");
+        setContactEmail(p.contact_email || p.email || "");
+        if (p.availability) setAvailability(p.availability);
+      })
+      .catch((err) => setError(err.message));
+  }, [navigate]);
+
+  // Real save to the backend.
+  async function handleSave(e) {
     e.preventDefault();
-    setSaved(true);
-    // Hide the message after 2 seconds
-    setTimeout(() => setSaved(false), 2000);
+    setError("");
+    try {
+      await saveProfile({
+        full_name: name,
+        headline,
+        bio,
+        // turn "React, Python" into ["React", "Python"]
+        skills: skills.split(",").map((s) => s.trim()).filter(Boolean),
+        location,
+        github,
+        linkedin,
+        contact_email: contactEmail,
+        availability,
+      });
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2000);
+    } catch (err) {
+      setError(err.message);
+    }
   }
 
   return (
@@ -41,8 +80,9 @@ export default function ProfileEditorPage() {
         <h1 className="page-header">Edit Profile</h1>
 
         <Card className="max-w-2xl">
-          {/* Success message after saving */}
+          {/* Success / error messages after saving */}
           {saved && <p className="alert-success">Profile saved successfully!</p>}
+          {error && <p className="alert-error">{error}</p>}
 
           <form onSubmit={handleSave}>
             <Input label="Name" value={name} onChange={(e) => setName(e.target.value)} />

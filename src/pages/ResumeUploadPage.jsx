@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Sidebar,
   studentLinks,
@@ -7,25 +8,68 @@ import {
   AIBox,
   Badge,
 } from "../components/Components.jsx";
-import { resumes, aiFeedback } from "../data.js";
+import { aiFeedback } from "../data.js";
+import {
+  getResume,
+  uploadResume,
+  deleteResume,
+  fileUrl,
+  getToken,
+} from "../api.js";
 import { FileText, Upload } from "lucide-react";
 
-// Resume Upload Page - upload/replace a resume + view a mock AI review.
+// Resume Upload Page - real upload/replace/download/delete + a mock AI review.
 export default function ResumeUploadPage() {
-  // Use the first resume as the current one (mock data)
-  const [resume, setResume] = useState(resumes[0]);
+  const navigate = useNavigate();
+  const [resume, setResume] = useState(null); // backend metadata or null
   const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+  const fileInputRef = useRef(null);
 
-  // Fake "upload/replace" - just updates the file name and date
-  function handleUpload() {
-    setResume({
-      ...resume,
-      fileName: "Updated_Resume.pdf",
-      uploadedDate: "2026-06-08",
-    });
-    setMessage("Resume uploaded successfully!");
-    setTimeout(() => setMessage(""), 2000);
+  // Load the current resume metadata when the page opens.
+  useEffect(() => {
+    if (!getToken()) {
+      navigate("/sign-in");
+      return;
+    }
+    getResume()
+      .then((r) => setResume(r))
+      .catch((err) => setError(err.message));
+  }, [navigate]);
+
+  // Real upload: send the chosen file to the backend.
+  async function handleFileChange(e) {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    setError("");
+    try {
+      const data = await uploadResume(file);
+      setResume(data);
+      setMessage("Resume uploaded successfully!");
+      setTimeout(() => setMessage(""), 2000);
+    } catch (err) {
+      setError(err.message);
+    }
   }
+
+  function handleDownload() {
+    if (resume) window.open(fileUrl(resume.url), "_blank");
+  }
+
+  async function handleDelete() {
+    setError("");
+    try {
+      await deleteResume();
+      setResume(null);
+      setMessage("Resume deleted.");
+      setTimeout(() => setMessage(""), 2000);
+    } catch (err) {
+      setError(err.message);
+    }
+  }
+
+  // ISO date string -> just the YYYY-MM-DD part
+  const uploadedDate = resume?.uploaded_at ? String(resume.uploaded_at).slice(0, 10) : "";
 
   return (
     <div className="page-shell">
@@ -35,38 +79,65 @@ export default function ResumeUploadPage() {
         <h1 className="page-header">Resume</h1>
 
         {message && <p className="alert-success">{message}</p>}
+        {error && <p className="alert-error">{error}</p>}
 
         <div className="content-grid">
           {/* Upload area + metadata */}
           <div className="space-y-6">
             <Card>
               <h3 className="card-title">Upload / Replace Resume</h3>
-              {/* Fake drag-and-drop box */}
-              <div className="upload-box p-8">
+
+              {/* Hidden real file input, triggered by the box below */}
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".pdf,.doc,.docx"
+                className="hidden"
+                onChange={handleFileChange}
+              />
+
+              <div
+                role="button"
+                tabIndex={0}
+                onClick={() => fileInputRef.current && fileInputRef.current.click()}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ")
+                    fileInputRef.current && fileInputRef.current.click();
+                }}
+                className="upload-box cursor-pointer p-8 hover:border-[#3199CC]"
+              >
                 <Upload className="mb-2 h-8 w-8 text-gray-400" />
-                <p className="text-sm text-gray-500">Drag a PDF here, or click to upload</p>
-                <div className="mt-3">
-                  <Button onClick={handleUpload}>Upload Resume</Button>
-                </div>
+                <p className="text-sm text-gray-500">Click to upload a PDF or Word file</p>
               </div>
             </Card>
 
             {/* Resume metadata card */}
             <Card>
               <h3 className="card-title">Resume Details</h3>
-              <div className="flex items-center gap-3">
-                <FileText className="h-8 w-8 text-[#001776]" />
-                <div>
-                  <p className="font-medium text-gray-800">{resume.fileName}</p>
-                  <p className="text-xs text-gray-500">
-                    Uploaded {resume.uploadedDate} • {resume.sizeKb} KB
-                  </p>
-                </div>
-              </div>
-              <div className="mt-3 flex items-center gap-2">
-                <Badge text={`${resume.downloads} downloads`} color="teal" />
-                <Button variant="outline">Download</Button>
-              </div>
+              {resume ? (
+                <>
+                  <div className="flex items-center gap-3">
+                    <FileText className="h-8 w-8 text-[#001776]" />
+                    <div>
+                      <p className="font-medium text-gray-800">{resume.original_name}</p>
+                      <p className="text-xs text-gray-500">
+                        Uploaded {uploadedDate} • {resume.size_kb} KB
+                      </p>
+                    </div>
+                  </div>
+                  <div className="mt-3 flex items-center gap-2">
+                    <Badge text={resume.content_type || "file"} color="teal" />
+                    <Button variant="outline" onClick={handleDownload}>
+                      Download
+                    </Button>
+                    <Button variant="danger" onClick={handleDelete}>
+                      Delete
+                    </Button>
+                  </div>
+                </>
+              ) : (
+                <p className="text-sm text-gray-500">No resume uploaded yet.</p>
+              )}
             </Card>
           </div>
 
@@ -75,7 +146,17 @@ export default function ResumeUploadPage() {
             {/* Simple preview box */}
             <Card>
               <h3 className="card-title">Preview</h3>
-              <div className="preview-box h-48">Resume preview (mock)</div>
+              {resume && resume.content_type === "application/pdf" ? (
+                <iframe
+                  title="Resume preview"
+                  src={fileUrl(resume.url)}
+                  className="h-48 w-full rounded-lg border border-gray-200"
+                />
+              ) : (
+                <div className="preview-box h-48">
+                  {resume ? "Preview available for PDF files" : "Upload a resume to preview"}
+                </div>
+              )}
             </Card>
 
             {/* AI resume review panel (fake AI) */}

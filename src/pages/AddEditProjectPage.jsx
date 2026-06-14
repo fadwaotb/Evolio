@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   Sidebar,
@@ -9,59 +9,103 @@ import {
   Button,
   AIBox,
 } from "../components/Components.jsx";
-import { projects, aiFeedback } from "../data.js";
+import { aiFeedback } from "../data.js";
+import {
+  getProject,
+  createProject,
+  updateProject,
+  uploadProjectImage,
+  fileUrl,
+  getToken,
+} from "../api.js";
 import { ImagePlus, X } from "lucide-react";
 
-// Add/Edit Project Page - one form used for BOTH adding and editing.
+// Add/Edit Project Page - one form used for BOTH adding and editing (real backend).
 // If there is a :projectId in the URL we are editing, otherwise adding.
 export default function AddEditProjectPage() {
   const { projectId } = useParams();
   const navigate = useNavigate();
+  const editing = Boolean(projectId);
 
-  // Find the project we are editing (if any)
-  const editing = projects.find((p) => p.id === projectId);
-
-  // Form state - fill it with the project data if editing
-  const [title, setTitle] = useState(editing ? editing.title : "");
-  const [summary, setSummary] = useState(editing ? editing.summary : "");
-  const [description, setDescription] = useState(editing ? editing.description : "");
-  const [tech, setTech] = useState(editing ? editing.techStack.join(", ") : "");
-  const [github, setGithub] = useState(editing ? editing.github : "");
-  const [demo, setDemo] = useState(editing ? editing.demo : "");
-  const [status, setStatus] = useState(editing ? editing.status : "Draft");
-  const [collaborators, setCollaborators] = useState(
-    editing ? editing.collaborators.join(", ") : ""
-  );
-  // Screenshot is stored as a data URL so it can be previewed without a backend.
-  // Projects keep a `screenshots` array; here we edit the primary (first) one.
-  const [screenshot, setScreenshot] = useState(
-    editing && editing.screenshots ? editing.screenshots[0] || "" : ""
-  );
+  // Form state (empty for "add"; filled from the backend for "edit")
+  const [title, setTitle] = useState("");
+  const [summary, setSummary] = useState("");
+  const [description, setDescription] = useState("");
+  const [tech, setTech] = useState("");
+  const [github, setGithub] = useState("");
+  const [demo, setDemo] = useState("");
+  const [status, setStatus] = useState("Draft");
+  const [collaborators, setCollaborators] = useState("");
+  // `screenshot` is a preview URL (data URL for a new pick, or a server URL).
+  const [screenshot, setScreenshot] = useState("");
+  const [screenshotFile, setScreenshotFile] = useState(null); // the real File to upload
   const [saved, setSaved] = useState(false);
+  const [error, setError] = useState("");
 
   // Hidden file input we trigger by clicking the upload box
   const fileInputRef = useRef(null);
 
-  // Read the chosen image file into a data URL so we can preview it
+  // When editing, load the project from the backend and fill the form.
+  useEffect(() => {
+    if (!getToken()) {
+      navigate("/sign-in");
+      return;
+    }
+    if (!editing) return;
+    getProject(projectId)
+      .then((p) => {
+        setTitle(p.title || "");
+        setSummary(p.summary || "");
+        setDescription(p.description || "");
+        setTech((p.tech_stack || []).join(", "));
+        setGithub(p.github_link || "");
+        setDemo(p.demo_link || "");
+        setStatus(p.status || "Draft");
+        setCollaborators((p.collaborators || []).join(", "));
+        if (p.screenshots && p.screenshots[0]) setScreenshot(fileUrl(p.screenshots[0]));
+      })
+      .catch((err) => setError(err.message));
+  }, [editing, projectId, navigate]);
+
+  // Read the chosen image into a data URL for preview AND keep the File to upload.
   function handleScreenshotChange(e) {
     const file = e.target.files && e.target.files[0];
     if (!file) return;
+    setScreenshotFile(file);
     const reader = new FileReader();
     reader.onload = () => setScreenshot(reader.result);
     reader.readAsDataURL(file);
   }
 
-  // Fake save - shows a message then goes back to the projects list
-  function handleSave(e) {
+  // Real save: create or update the project, then upload the screenshot if any.
+  async function handleSave(e) {
     e.preventDefault();
-    // No backend: persist the screenshot onto the mock project so it shows
-    // up in the projects list and portfolio previews during this session.
-    if (editing) {
-      const rest = (editing.screenshots || []).slice(1);
-      editing.screenshots = screenshot ? [screenshot, ...rest] : rest;
+    setError("");
+    const payload = {
+      title,
+      summary,
+      description,
+      tech_stack: tech.split(",").map((s) => s.trim()).filter(Boolean),
+      github_link: github,
+      demo_link: demo,
+      status,
+      collaborators: collaborators.split(",").map((s) => s.trim()).filter(Boolean),
+    };
+    try {
+      const project = editing
+        ? await updateProject(projectId, payload)
+        : await createProject(payload);
+
+      // Only upload if the user picked a NEW file this time.
+      if (screenshotFile) {
+        await uploadProjectImage(project.id, screenshotFile);
+      }
+
+      setSaved(true);
+      setTimeout(() => navigate("/student/projects"), 1000);
+    } catch (err) {
+      setError(err.message);
     }
-    setSaved(true);
-    setTimeout(() => navigate("/student/projects"), 1200);
   }
 
   return (
@@ -78,6 +122,7 @@ export default function AddEditProjectPage() {
           <div className="lg:col-span-2">
             <Card>
               {saved && <p className="alert-success">Project saved! Redirecting...</p>}
+              {error && <p className="alert-error">{error}</p>}
 
               <form onSubmit={handleSave}>
                 <Input label="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
@@ -129,6 +174,7 @@ export default function AddEditProjectPage() {
                         type="button"
                         onClick={() => {
                           setScreenshot("");
+                          setScreenshotFile(null);
                           if (fileInputRef.current) fileInputRef.current.value = "";
                         }}
                         className="absolute right-2 top-2 rounded-full bg-white/90 p-1 text-gray-600 shadow hover:bg-white"
