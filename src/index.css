@@ -2,46 +2,38 @@
 @tailwind components;
 @tailwind utilities;
 
-
 /* ------------------------- Global styles ------------------------- */
 body {
-  background-color: #f8fafc; /* light gray */
+  background-color: #f8fafc;
 }
 
 @layer components {
   /* ------------------------- Layout ------------------------- */
 
-  /* Dashboard pages: sidebar + main content side by side */
   .page-shell {
     @apply flex flex-col md:flex-row;
   }
 
-  /* The main content column on dashboard pages */
   .page-main {
     @apply flex-1 p-6;
   }
 
-  /* The big page title (h1) at the top of a page */
   .page-header {
     @apply mb-6 text-2xl font-bold text-gray-800;
   }
 
-  /* A page title with a button on the right (title + action row) */
   .page-header-row {
     @apply mb-6 flex items-center justify-between;
   }
 
-  /* Narrow centered container used on the auth pages */
   .auth-container {
     @apply mx-auto max-w-md px-6 py-12;
   }
 
-  /* Centered title used on the auth pages */
   .auth-title {
     @apply mb-6 text-center text-2xl font-bold text-gray-800;
   }
 
-  /* The small heading inside a card */
   .card-title {
     @apply mb-3 font-semibold text-gray-800;
   }
@@ -69,7 +61,6 @@ body {
 
   /* ------------------------- Cards ------------------------- */
 
-  /* The white rounded box used everywhere */
   .section-card {
     @apply rounded-xl border border-[#DDE7F0] bg-white p-5 shadow-sm;
   }
@@ -83,22 +74,18 @@ body {
     @apply mb-1 block text-sm font-medium text-gray-700;
   }
 
-  /* Short select used in the search/filter bars */
   .filter-select {
     @apply h-10 rounded-lg border border-gray-300 px-3 text-sm focus:border-[#3199CC] focus:outline-none;
   }
 
-  /* The search + filter row above lists */
   .filter-bar {
     @apply mb-6 flex flex-col gap-3 sm:flex-row;
   }
 
-  /* Green "success" message banner */
   .alert-success {
     @apply mb-4 rounded-lg bg-green-50 p-2 text-sm text-green-700;
   }
 
-  /* Red "error" message banner */
   .alert-error {
     @apply mb-4 rounded-lg bg-red-50 p-2 text-sm text-red-600;
   }
@@ -116,7 +103,6 @@ body {
     @apply bg-[#199DB2] text-white;
   }
 
-  /* A sidebar link that is NOT the current page */
   .sidebar-link-idle {
     @apply text-white/70 hover:bg-white/10 hover:text-white;
   }
@@ -152,72 +138,58 @@ body {
 
   /* ------------------------- Dashboard ------------------------- */
 
-  /* Row of stat cards (4 across on large screens) */
   .dashboard-grid {
     @apply mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4;
   }
 
-  /* Row of stat cards (3 across) */
   .stats-grid-3 {
     @apply mb-6 grid gap-4 sm:grid-cols-3;
   }
 
-  /* Two-column content grid */
   .content-grid {
     @apply grid gap-6 lg:grid-cols-2;
   }
 
-  /* Three-column content grid (main area + side column) */
   .content-grid-3 {
     @apply grid gap-6 lg:grid-cols-3;
   }
 
-  /* Grid of cards, two across */
   .card-grid {
     @apply grid gap-4 md:grid-cols-2;
   }
 
-  /* A simple list row inside a card */
   .list-row {
     @apply flex items-center justify-between rounded-lg border border-gray-100 p-3;
   }
 
-  /* A list row that stacks on mobile, spreads out on desktop */
   .list-row-responsive {
     @apply flex flex-col gap-2 rounded-lg border border-gray-100 p-3 sm:flex-row sm:items-center sm:justify-between;
   }
 
-  /* A small bordered box for one project inside a portfolio card */
   .project-item {
     @apply rounded-lg border border-gray-100 p-4;
   }
 
-  /* Round avatar circle with a letter inside */
   .avatar {
     @apply flex h-16 w-16 items-center justify-center rounded-full text-xl font-bold text-white;
   }
 
-  /* Gray placeholder box (mock resume preview, etc.) */
   .preview-box {
     @apply flex items-center justify-center rounded-lg bg-gray-100 text-sm text-gray-400;
   }
 
-  /* Dashed "drop a file here" upload box */
   .upload-box {
     @apply flex flex-col items-center rounded-lg border-2 border-dashed border-gray-300 text-center;
   }
 
-  /* A single recent-activity line */
   .activity-row {
     @apply flex justify-between border-b border-gray-100 pb-2;
   }
 
-  /* A feedback timeline entry with a colored left bar */
   .timeline-item {
     @apply border-l-2 border-[#3199CC]/30 pl-3;
   }
 
-  /* Progress bar track + fill */
   .progress-track {
     @apply h-2 w-full rounded-full bg-gray-100;
   }
@@ -228,12 +200,10 @@ body {
 
   /* ------------------------- AI sections ------------------------- */
 
-  /* The light teal "AI" panel */
   .ai-box {
     @apply rounded-xl border border-[#199DB2]/30 bg-[#E1F4F7] p-5 shadow-sm;
   }
 
-  /* The white result box inside an AI panel */
   .ai-result {
     @apply mb-3 rounded-lg bg-white p-3 text-sm text-gray-700;
   }
@@ -247,4 +217,3 @@ body {
     @apply w-full max-w-lg rounded-xl bg-white p-6 shadow-lg;
   }
 }
-

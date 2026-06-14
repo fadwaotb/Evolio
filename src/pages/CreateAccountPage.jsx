@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Navbar, Card, Input, Button } from "../components/Components.jsx";
+import { registerUser } from "../services/api.js";
 
-// Create Account Page - simple sign up form with basic validation.
+// Create Account Page - registers a new student/employer via the backend.
 export default function CreateAccountPage() {
   const navigate = useNavigate();
 
@@ -16,10 +17,11 @@ export default function CreateAccountPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
 
+  // All four account types can be created.
   const roles = ["Student", "Employer", "Career Coach", "Admin"];
 
-  // Validate the form, then pretend to create the account.
-  function handleSubmit(e) {
+  // Validate the form, then create the account through the backend.
+  async function handleSubmit(e) {
     e.preventDefault();
 
     // Simple validation checks
@@ -36,10 +38,15 @@ export default function CreateAccountPage() {
       return;
     }
 
-    // All good - show success then redirect to sign in
     setError("");
-    setSuccess(true);
-    setTimeout(() => navigate("/sign-in"), 1200);
+    try {
+      await registerUser({ name, email, password, role });
+      // All good - show success then redirect to sign in.
+      setSuccess(true);
+      setTimeout(() => navigate("/sign-in"), 1200);
+    } catch (err) {
+      setError(err.message || "Could not create account. Please try again.");
+    }
   }
 
   return (
